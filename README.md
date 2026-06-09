@@ -17,6 +17,31 @@ Architect* from the official x86/x64 release.
 
 ---
 
+## Quick start
+
+> Needs **Windows on ARM64** + the [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0).
+> Full details in [Prerequisites](#prerequisites). WiX is restored automatically.
+
+```powershell
+# 1) Download the official Sparx installer (x64) — https://www.sparxsystems.jp/en/MCP/
+#    e.g. to %USERPROFILE%\Downloads\MCP_EA_x64.msi   (this repo ships no Sparx binaries)
+
+# 2) Build the native ARM64 MSI
+git clone https://github.com/klesajos/enterprise-architect-mcp-arm64.git
+cd enterprise-architect-mcp-arm64
+./build.ps1 -SourceMsi "$HOME\Downloads\MCP_EA_x64.msi"      # -> dist\MCP_EA_arm64.msi
+
+# 3) Install it
+msiexec /i dist\MCP_EA_arm64.msi
+```
+
+Then open **Enterprise Architect** (tick **Load on Startup** for *MCPAddin*) and point your MCP client
+at `C:\Program Files\Sparx Systems\EA\MCP_Server\MCP3.exe` — see
+[Connect your MCP client](#connect-your-mcp-client). ⚠️ Keep **only one** EA instance running
+([why](#run-only-one-enterprise-architect-instance)).
+
+---
+
 ## How it works
 
 ![Architecture diagram: the AI client spawns the MCP server (MCP3.exe) over stdio; the server bridges to the MCP_EA.dll add-in inside Enterprise Architect over a named pipe; the add-in reaches the EA Repository via in-process COM](docs/architecture.png)
@@ -114,7 +139,7 @@ Then:
 > the add-in *inside* EA over a named pipe. The MCP client **spawns the server for you** — you never
 > launch `MCP3.exe` manually.
 
-## ⚠️ Run only ONE Enterprise Architect instance
+## Run only ONE Enterprise Architect instance
 
 > [!WARNING]
 > The MCP server connects to the **first Enterprise Architect instance that was started**, and it
