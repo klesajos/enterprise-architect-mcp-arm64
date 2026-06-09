@@ -6,9 +6,9 @@
                      {
                          "id":  "rA",
                          "type":  "rectangle",
-                         "x":  60,
+                         "x":  50,
                          "y":  300,
-                         "width":  290,
+                         "width":  280,
                          "height":  170,
                          "angle":  0,
                          "strokeColor":  "#1971c2",
@@ -25,9 +25,9 @@
                          "roundness":  {
                                            "type":  3
                                        },
-                         "seed":  86597941,
+                         "seed":  610064459,
                          "version":  1,
-                         "versionNonce":  1144706273,
+                         "versionNonce":  516985729,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -39,7 +39,7 @@
                      {
                          "id":  "rB",
                          "type":  "rectangle",
-                         "x":  520,
+                         "x":  590,
                          "y":  290,
                          "width":  320,
                          "height":  196,
@@ -58,9 +58,9 @@
                          "roundness":  {
                                            "type":  3
                                        },
-                         "seed":  1155784458,
+                         "seed":  1809661364,
                          "version":  1,
-                         "versionNonce":  462516121,
+                         "versionNonce":  1554187060,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -72,7 +72,7 @@
                      {
                          "id":  "rEA",
                          "type":  "rectangle",
-                         "x":  1000,
+                         "x":  1110,
                          "y":  150,
                          "width":  440,
                          "height":  480,
@@ -91,9 +91,9 @@
                          "roundness":  {
                                            "type":  3
                                        },
-                         "seed":  954558403,
+                         "seed":  887584342,
                          "version":  1,
-                         "versionNonce":  1084508771,
+                         "versionNonce":  1425064572,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -105,7 +105,7 @@
                      {
                          "id":  "rAd",
                          "type":  "rectangle",
-                         "x":  1035,
+                         "x":  1145,
                          "y":  270,
                          "width":  370,
                          "height":  170,
@@ -124,9 +124,9 @@
                          "roundness":  {
                                            "type":  3
                                        },
-                         "seed":  1434450700,
+                         "seed":  455199343,
                          "version":  1,
-                         "versionNonce":  1211310916,
+                         "versionNonce":  1179355516,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -138,7 +138,7 @@
                      {
                          "id":  "rTag",
                          "type":  "rectangle",
-                         "x":  1100,
+                         "x":  1210,
                          "y":  396,
                          "width":  240,
                          "height":  32,
@@ -157,9 +157,9 @@
                          "roundness":  {
                                            "type":  3
                                        },
-                         "seed":  914216564,
+                         "seed":  1579534852,
                          "version":  1,
-                         "versionNonce":  2126711181,
+                         "versionNonce":  550836781,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -171,7 +171,7 @@
                      {
                          "id":  "rRp",
                          "type":  "rectangle",
-                         "x":  1035,
+                         "x":  1145,
                          "y":  488,
                          "width":  370,
                          "height":  120,
@@ -190,9 +190,9 @@
                          "roundness":  {
                                            "type":  3
                                        },
-                         "seed":  1654954918,
+                         "seed":  970924203,
                          "version":  1,
-                         "versionNonce":  1256356987,
+                         "versionNonce":  1036798565,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -204,9 +204,9 @@
                      {
                          "id":  "rCo",
                          "type":  "rectangle",
-                         "x":  60,
+                         "x":  50,
                          "y":  680,
-                         "width":  1380,
+                         "width":  1500,
                          "height":  140,
                          "angle":  0,
                          "strokeColor":  "#adb5bd",
@@ -223,9 +223,9 @@
                          "roundness":  {
                                            "type":  3
                                        },
-                         "seed":  1431948717,
+                         "seed":  826448218,
                          "version":  1,
-                         "versionNonce":  1565694536,
+                         "versionNonce":  1885211070,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -237,9 +237,9 @@
                      {
                          "id":  "p1",
                          "type":  "rectangle",
-                         "x":  348,
+                         "x":  370,
                          "y":  336,
-                         "width":  172,
+                         "width":  180,
                          "height":  30,
                          "angle":  0,
                          "strokeColor":  "#ced4da",
@@ -256,9 +256,9 @@
                          "roundness":  {
                                            "type":  3
                                        },
-                         "seed":  542665009,
+                         "seed":  1170499579,
                          "version":  1,
-                         "versionNonce":  68219294,
+                         "versionNonce":  1675478066,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -270,9 +270,9 @@
                      {
                          "id":  "p2",
                          "type":  "rectangle",
-                         "x":  844,
+                         "x":  940,
                          "y":  312,
-                         "width":  150,
+                         "width":  140,
                          "height":  30,
                          "angle":  0,
                          "strokeColor":  "#ced4da",
@@ -289,9 +289,9 @@
                          "roundness":  {
                                            "type":  3
                                        },
-                         "seed":  1759358922,
+                         "seed":  1051053058,
                          "version":  1,
-                         "versionNonce":  185025204,
+                         "versionNonce":  402995257,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -303,7 +303,7 @@
                      {
                          "id":  "p3",
                          "type":  "rectangle",
-                         "x":  1205,
+                         "x":  1320,
                          "y":  447,
                          "width":  180,
                          "height":  28,
@@ -322,9 +322,9 @@
                          "roundness":  {
                                            "type":  3
                                        },
-                         "seed":  1698690411,
+                         "seed":  279738383,
                          "version":  1,
-                         "versionNonce":  2054044434,
+                         "versionNonce":  1942483654,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -336,7 +336,7 @@
                      {
                          "id":  "sw1",
                          "type":  "rectangle",
-                         "x":  300,
+                         "x":  350,
                          "y":  846,
                          "width":  22,
                          "height":  22,
@@ -355,9 +355,9 @@
                          "roundness":  {
                                            "type":  3
                                        },
-                         "seed":  471642276,
+                         "seed":  1663189978,
                          "version":  1,
-                         "versionNonce":  213379293,
+                         "versionNonce":  711397170,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -369,7 +369,7 @@
                      {
                          "id":  "sw2",
                          "type":  "rectangle",
-                         "x":  760,
+                         "x":  830,
                          "y":  846,
                          "width":  22,
                          "height":  22,
@@ -388,9 +388,9 @@
                          "roundness":  {
                                            "type":  3
                                        },
-                         "seed":  1633444815,
+                         "seed":  469732105,
                          "version":  1,
-                         "versionNonce":  1090967448,
+                         "versionNonce":  1994795415,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -404,7 +404,7 @@
                          "type":  "text",
                          "x":  300,
                          "y":  18,
-                         "width":  900,
+                         "width":  1000,
                          "height":  35,
                          "angle":  0,
                          "strokeColor":  "#343a40",
@@ -419,9 +419,9 @@
                                       ],
                          "frameId":  null,
                          "roundness":  null,
-                         "seed":  2061513278,
+                         "seed":  1918528920,
                          "version":  1,
-                         "versionNonce":  190826893,
+                         "versionNonce":  1474827951,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -430,7 +430,7 @@
                          "link":  null,
                          "locked":  false,
                          "fontSize":  28,
-                         "fontFamily": 2,
+                         "fontFamily":  2,
                          "text":  "How the MCP integration with Enterprise Architect works",
                          "textAlign":  "center",
                          "verticalAlign":  "top",
@@ -444,7 +444,7 @@
                          "type":  "text",
                          "x":  300,
                          "y":  60,
-                         "width":  900,
+                         "width":  1000,
                          "height":  20,
                          "angle":  0,
                          "strokeColor":  "#868e96",
@@ -459,9 +459,9 @@
                                       ],
                          "frameId":  null,
                          "roundness":  null,
-                         "seed":  838668441,
+                         "seed":  665736965,
                          "version":  1,
-                         "versionNonce":  1892239100,
+                         "versionNonce":  1649139765,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -470,7 +470,7 @@
                          "link":  null,
                          "locked":  false,
                          "fontSize":  16,
-                         "fontFamily": 2,
+                         "fontFamily":  2,
                          "text":  "native Windows ARM64 build - who runs the MCP server, and how",
                          "textAlign":  "center",
                          "verticalAlign":  "top",
@@ -482,9 +482,9 @@
                      {
                          "id":  "a1",
                          "type":  "text",
-                         "x":  60,
+                         "x":  50,
                          "y":  322,
-                         "width":  290,
+                         "width":  280,
                          "height":  28,
                          "angle":  0,
                          "strokeColor":  "#343a40",
@@ -499,9 +499,9 @@
                                       ],
                          "frameId":  null,
                          "roundness":  null,
-                         "seed":  1750348535,
+                         "seed":  1069769120,
                          "version":  1,
-                         "versionNonce":  1358993000,
+                         "versionNonce":  1134240034,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -510,7 +510,7 @@
                          "link":  null,
                          "locked":  false,
                          "fontSize":  22,
-                         "fontFamily": 2,
+                         "fontFamily":  2,
                          "text":  "AI Client",
                          "textAlign":  "center",
                          "verticalAlign":  "top",
@@ -522,9 +522,9 @@
                      {
                          "id":  "a2",
                          "type":  "text",
-                         "x":  60,
+                         "x":  50,
                          "y":  356,
-                         "width":  290,
+                         "width":  280,
                          "height":  19,
                          "angle":  0,
                          "strokeColor":  "#868e96",
@@ -539,9 +539,9 @@
                                       ],
                          "frameId":  null,
                          "roundness":  null,
-                         "seed":  607077649,
+                         "seed":  1296519932,
                          "version":  1,
-                         "versionNonce":  303562817,
+                         "versionNonce":  1194020408,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -550,7 +550,7 @@
                          "link":  null,
                          "locked":  false,
                          "fontSize":  15,
-                         "fontFamily": 2,
+                         "fontFamily":  2,
                          "text":  "(the MCP host)",
                          "textAlign":  "center",
                          "verticalAlign":  "top",
@@ -562,9 +562,9 @@
                      {
                          "id":  "a3",
                          "type":  "text",
-                         "x":  60,
+                         "x":  50,
                          "y":  392,
-                         "width":  290,
+                         "width":  280,
                          "height":  20,
                          "angle":  0,
                          "strokeColor":  "#343a40",
@@ -579,9 +579,9 @@
                                       ],
                          "frameId":  null,
                          "roundness":  null,
-                         "seed":  1512013890,
+                         "seed":  706948417,
                          "version":  1,
-                         "versionNonce":  1724224956,
+                         "versionNonce":  415966289,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -590,7 +590,7 @@
                          "link":  null,
                          "locked":  false,
                          "fontSize":  16,
-                         "fontFamily": 2,
+                         "fontFamily":  2,
                          "text":  "Claude Desktop . Claude Code",
                          "textAlign":  "center",
                          "verticalAlign":  "top",
@@ -602,9 +602,9 @@
                      {
                          "id":  "a4",
                          "type":  "text",
-                         "x":  60,
+                         "x":  50,
                          "y":  418,
-                         "width":  290,
+                         "width":  280,
                          "height":  20,
                          "angle":  0,
                          "strokeColor":  "#343a40",
@@ -619,9 +619,9 @@
                                       ],
                          "frameId":  null,
                          "roundness":  null,
-                         "seed":  1533846040,
+                         "seed":  1767198864,
                          "version":  1,
-                         "versionNonce":  697546254,
+                         "versionNonce":  1701663235,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -630,7 +630,7 @@
                          "link":  null,
                          "locked":  false,
                          "fontSize":  16,
-                         "fontFamily": 2,
+                         "fontFamily":  2,
                          "text":  "VS Code . Cursor ...",
                          "textAlign":  "center",
                          "verticalAlign":  "top",
@@ -642,7 +642,7 @@
                      {
                          "id":  "b1",
                          "type":  "text",
-                         "x":  520,
+                         "x":  590,
                          "y":  312,
                          "width":  320,
                          "height":  28,
@@ -659,9 +659,9 @@
                                       ],
                          "frameId":  null,
                          "roundness":  null,
-                         "seed":  97273247,
+                         "seed":  2050693853,
                          "version":  1,
-                         "versionNonce":  971463007,
+                         "versionNonce":  323924949,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -670,7 +670,7 @@
                          "link":  null,
                          "locked":  false,
                          "fontSize":  22,
-                         "fontFamily": 2,
+                         "fontFamily":  2,
                          "text":  "MCP Server",
                          "textAlign":  "center",
                          "verticalAlign":  "top",
@@ -682,7 +682,7 @@
                      {
                          "id":  "b2",
                          "type":  "text",
-                         "x":  520,
+                         "x":  590,
                          "y":  346,
                          "width":  320,
                          "height":  28,
@@ -699,9 +699,9 @@
                                       ],
                          "frameId":  null,
                          "roundness":  null,
-                         "seed":  1243198293,
+                         "seed":  1829256568,
                          "version":  1,
-                         "versionNonce":  224693449,
+                         "versionNonce":  1553286938,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -722,7 +722,7 @@
                      {
                          "id":  "b3",
                          "type":  "text",
-                         "x":  520,
+                         "x":  590,
                          "y":  380,
                          "width":  320,
                          "height":  19,
@@ -739,9 +739,9 @@
                                       ],
                          "frameId":  null,
                          "roundness":  null,
-                         "seed":  1836286264,
+                         "seed":  1223563829,
                          "version":  1,
-                         "versionNonce":  1125772613,
+                         "versionNonce":  1886662441,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -750,7 +750,7 @@
                          "link":  null,
                          "locked":  false,
                          "fontSize":  15,
-                         "fontFamily": 2,
+                         "fontFamily":  2,
                          "text":  "native .NET 9 apphost . ARM64",
                          "textAlign":  "center",
                          "verticalAlign":  "top",
@@ -762,7 +762,7 @@
                      {
                          "id":  "b4",
                          "type":  "text",
-                         "x":  520,
+                         "x":  590,
                          "y":  410,
                          "width":  320,
                          "height":  15,
@@ -779,9 +779,9 @@
                                       ],
                          "frameId":  null,
                          "roundness":  null,
-                         "seed":  1229346223,
+                         "seed":  83145185,
                          "version":  1,
-                         "versionNonce":  1279866561,
+                         "versionNonce":  159140741,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -802,7 +802,7 @@
                      {
                          "id":  "b5",
                          "type":  "text",
-                         "x":  520,
+                         "x":  590,
                          "y":  428,
                          "width":  320,
                          "height":  15,
@@ -819,9 +819,9 @@
                                       ],
                          "frameId":  null,
                          "roundness":  null,
-                         "seed":  757634738,
+                         "seed":  241124163,
                          "version":  1,
-                         "versionNonce":  1336814897,
+                         "versionNonce":  1456389963,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -842,7 +842,7 @@
                      {
                          "id":  "b6",
                          "type":  "text",
-                         "x":  520,
+                         "x":  590,
                          "y":  456,
                          "width":  320,
                          "height":  16,
@@ -859,9 +859,9 @@
                                       ],
                          "frameId":  null,
                          "roundness":  null,
-                         "seed":  106178927,
+                         "seed":  2024356223,
                          "version":  1,
-                         "versionNonce":  873493650,
+                         "versionNonce":  2092339976,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -870,7 +870,7 @@
                          "link":  null,
                          "locked":  false,
                          "fontSize":  13,
-                         "fontFamily": 2,
+                         "fontFamily":  2,
                          "text":  "spawned on demand by the client",
                          "textAlign":  "center",
                          "verticalAlign":  "top",
@@ -882,7 +882,7 @@
                      {
                          "id":  "e1",
                          "type":  "text",
-                         "x":  1000,
+                         "x":  1110,
                          "y":  172,
                          "width":  440,
                          "height":  25,
@@ -899,9 +899,9 @@
                                       ],
                          "frameId":  null,
                          "roundness":  null,
-                         "seed":  1870921621,
+                         "seed":  399951683,
                          "version":  1,
-                         "versionNonce":  139001990,
+                         "versionNonce":  1027673516,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -910,7 +910,7 @@
                          "link":  null,
                          "locked":  false,
                          "fontSize":  20,
-                         "fontFamily": 2,
+                         "fontFamily":  2,
                          "text":  "Enterprise Architect",
                          "textAlign":  "center",
                          "verticalAlign":  "top",
@@ -922,7 +922,7 @@
                      {
                          "id":  "e2",
                          "type":  "text",
-                         "x":  1000,
+                         "x":  1110,
                          "y":  200,
                          "width":  440,
                          "height":  18,
@@ -939,9 +939,9 @@
                                       ],
                          "frameId":  null,
                          "roundness":  null,
-                         "seed":  1724883091,
+                         "seed":  823346844,
                          "version":  1,
-                         "versionNonce":  112442908,
+                         "versionNonce":  1128670203,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -962,7 +962,7 @@
                      {
                          "id":  "e3",
                          "type":  "text",
-                         "x":  1000,
+                         "x":  1110,
                          "y":  222,
                          "width":  440,
                          "height":  16,
@@ -979,9 +979,9 @@
                                       ],
                          "frameId":  null,
                          "roundness":  null,
-                         "seed":  2051399805,
+                         "seed":  680354557,
                          "version":  1,
-                         "versionNonce":  1732432937,
+                         "versionNonce":  1305948805,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -990,7 +990,7 @@
                          "link":  null,
                          "locked":  false,
                          "fontSize":  13,
-                         "fontFamily": 2,
+                         "fontFamily":  2,
                          "text":  "32-bit . runs under emulation on ARM64",
                          "textAlign":  "center",
                          "verticalAlign":  "top",
@@ -1002,7 +1002,7 @@
                      {
                          "id":  "d1",
                          "type":  "text",
-                         "x":  1035,
+                         "x":  1145,
                          "y":  292,
                          "width":  370,
                          "height":  24,
@@ -1019,9 +1019,9 @@
                                       ],
                          "frameId":  null,
                          "roundness":  null,
-                         "seed":  545036848,
+                         "seed":  150664300,
                          "version":  1,
-                         "versionNonce":  898120028,
+                         "versionNonce":  590135648,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -1030,7 +1030,7 @@
                          "link":  null,
                          "locked":  false,
                          "fontSize":  19,
-                         "fontFamily": 2,
+                         "fontFamily":  2,
                          "text":  "MCP add-in",
                          "textAlign":  "center",
                          "verticalAlign":  "top",
@@ -1042,7 +1042,7 @@
                      {
                          "id":  "d2",
                          "type":  "text",
-                         "x":  1035,
+                         "x":  1145,
                          "y":  320,
                          "width":  370,
                          "height":  21,
@@ -1059,9 +1059,9 @@
                                       ],
                          "frameId":  null,
                          "roundness":  null,
-                         "seed":  1831950154,
+                         "seed":  27203315,
                          "version":  1,
-                         "versionNonce":  132911880,
+                         "versionNonce":  1861514092,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -1082,7 +1082,7 @@
                      {
                          "id":  "d3",
                          "type":  "text",
-                         "x":  1035,
+                         "x":  1145,
                          "y":  346,
                          "width":  370,
                          "height":  16,
@@ -1099,9 +1099,9 @@
                                       ],
                          "frameId":  null,
                          "roundness":  null,
-                         "seed":  512835640,
+                         "seed":  1510641642,
                          "version":  1,
-                         "versionNonce":  742656400,
+                         "versionNonce":  842993834,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -1110,7 +1110,7 @@
                          "link":  null,
                          "locked":  false,
                          "fontSize":  13,
-                         "fontFamily": 2,
+                         "fontFamily":  2,
                          "text":  "AnyCPU . .NET Framework 4.8 . in-process",
                          "textAlign":  "center",
                          "verticalAlign":  "top",
@@ -1122,7 +1122,7 @@
                      {
                          "id":  "dt",
                          "type":  "text",
-                         "x":  1100,
+                         "x":  1210,
                          "y":  403,
                          "width":  240,
                          "height":  18,
@@ -1139,9 +1139,9 @@
                                       ],
                          "frameId":  null,
                          "roundness":  null,
-                         "seed":  980059125,
+                         "seed":  1924838049,
                          "version":  1,
-                         "versionNonce":  1477562655,
+                         "versionNonce":  1394086433,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -1150,7 +1150,7 @@
                          "link":  null,
                          "locked":  false,
                          "fontSize":  14,
-                         "fontFamily": 2,
+                         "fontFamily":  2,
                          "text":  "Named-Pipe SERVER",
                          "textAlign":  "center",
                          "verticalAlign":  "top",
@@ -1162,7 +1162,7 @@
                      {
                          "id":  "r1",
                          "type":  "text",
-                         "x":  1035,
+                         "x":  1145,
                          "y":  510,
                          "width":  370,
                          "height":  24,
@@ -1179,9 +1179,9 @@
                                       ],
                          "frameId":  null,
                          "roundness":  null,
-                         "seed":  788263062,
+                         "seed":  542134484,
                          "version":  1,
-                         "versionNonce":  959094059,
+                         "versionNonce":  1743718678,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -1190,7 +1190,7 @@
                          "link":  null,
                          "locked":  false,
                          "fontSize":  19,
-                         "fontFamily": 2,
+                         "fontFamily":  2,
                          "text":  "EA Repository",
                          "textAlign":  "center",
                          "verticalAlign":  "top",
@@ -1202,7 +1202,7 @@
                      {
                          "id":  "r2",
                          "type":  "text",
-                         "x":  1035,
+                         "x":  1145,
                          "y":  540,
                          "width":  370,
                          "height":  19,
@@ -1219,9 +1219,9 @@
                                       ],
                          "frameId":  null,
                          "roundness":  null,
-                         "seed":  103420746,
+                         "seed":  1195500682,
                          "version":  1,
-                         "versionNonce":  14089574,
+                         "versionNonce":  1174246027,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -1230,7 +1230,7 @@
                          "link":  null,
                          "locked":  false,
                          "fontSize":  15,
-                         "fontFamily": 2,
+                         "fontFamily":  2,
                          "text":  "the live model",
                          "textAlign":  "center",
                          "verticalAlign":  "top",
@@ -1242,7 +1242,7 @@
                      {
                          "id":  "r3",
                          "type":  "text",
-                         "x":  1035,
+                         "x":  1145,
                          "y":  564,
                          "width":  370,
                          "height":  18,
@@ -1259,9 +1259,9 @@
                                       ],
                          "frameId":  null,
                          "roundness":  null,
-                         "seed":  1210471446,
+                         "seed":  1325015361,
                          "version":  1,
-                         "versionNonce":  1509617950,
+                         "versionNonce":  1194078206,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -1282,9 +1282,9 @@
                      {
                          "id":  "tp1",
                          "type":  "text",
-                         "x":  348,
+                         "x":  370,
                          "y":  343,
-                         "width":  172,
+                         "width":  180,
                          "height":  18,
                          "angle":  0,
                          "strokeColor":  "#343a40",
@@ -1299,9 +1299,9 @@
                                       ],
                          "frameId":  null,
                          "roundness":  null,
-                         "seed":  1263104651,
+                         "seed":  1643006772,
                          "version":  1,
-                         "versionNonce":  276259205,
+                         "versionNonce":  1436148976,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -1310,7 +1310,7 @@
                          "link":  null,
                          "locked":  false,
                          "fontSize":  14,
-                         "fontFamily": 2,
+                         "fontFamily":  2,
                          "text":  "(1) stdio . MCP (JSON-RPC)",
                          "textAlign":  "center",
                          "verticalAlign":  "top",
@@ -1322,9 +1322,9 @@
                      {
                          "id":  "ts1",
                          "type":  "text",
-                         "x":  348,
+                         "x":  370,
                          "y":  398,
-                         "width":  172,
+                         "width":  180,
                          "height":  15,
                          "angle":  0,
                          "strokeColor":  "#868e96",
@@ -1339,9 +1339,9 @@
                                       ],
                          "frameId":  null,
                          "roundness":  null,
-                         "seed":  123721302,
+                         "seed":  938165675,
                          "version":  1,
-                         "versionNonce":  407385915,
+                         "versionNonce":  751214438,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -1350,7 +1350,7 @@
                          "link":  null,
                          "locked":  false,
                          "fontSize":  12,
-                         "fontFamily": 2,
+                         "fontFamily":  2,
                          "text":  "request / response",
                          "textAlign":  "center",
                          "verticalAlign":  "top",
@@ -1362,9 +1362,9 @@
                      {
                          "id":  "tp2",
                          "type":  "text",
-                         "x":  844,
+                         "x":  940,
                          "y":  319,
-                         "width":  150,
+                         "width":  140,
                          "height":  18,
                          "angle":  0,
                          "strokeColor":  "#343a40",
@@ -1379,9 +1379,9 @@
                                       ],
                          "frameId":  null,
                          "roundness":  null,
-                         "seed":  948476883,
+                         "seed":  2100649350,
                          "version":  1,
-                         "versionNonce":  1773874861,
+                         "versionNonce":  1125726563,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -1390,7 +1390,7 @@
                          "link":  null,
                          "locked":  false,
                          "fontSize":  14,
-                         "fontFamily": 2,
+                         "fontFamily":  2,
                          "text":  "(2) Named Pipe",
                          "textAlign":  "center",
                          "verticalAlign":  "top",
@@ -1402,7 +1402,7 @@
                      {
                          "id":  "ts2",
                          "type":  "text",
-                         "x":  820,
+                         "x":  910,
                          "y":  376,
                          "width":  200,
                          "height":  15,
@@ -1419,9 +1419,9 @@
                                       ],
                          "frameId":  null,
                          "roundness":  null,
-                         "seed":  300854595,
+                         "seed":  685927859,
                          "version":  1,
-                         "versionNonce":  352382537,
+                         "versionNonce":  1286409250,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -1430,7 +1430,7 @@
                          "link":  null,
                          "locked":  false,
                          "fontSize":  12,
-                         "fontFamily": 2,
+                         "fontFamily":  2,
                          "text":  "bridges ARM64 - x86",
                          "textAlign":  "center",
                          "verticalAlign":  "top",
@@ -1442,7 +1442,7 @@
                      {
                          "id":  "tp3",
                          "type":  "text",
-                         "x":  1205,
+                         "x":  1320,
                          "y":  453,
                          "width":  180,
                          "height":  16,
@@ -1459,9 +1459,9 @@
                                       ],
                          "frameId":  null,
                          "roundness":  null,
-                         "seed":  1062582498,
+                         "seed":  1556071268,
                          "version":  1,
-                         "versionNonce":  1243009058,
+                         "versionNonce":  578630165,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -1470,7 +1470,7 @@
                          "link":  null,
                          "locked":  false,
                          "fontSize":  13,
-                         "fontFamily": 2,
+                         "fontFamily":  2,
                          "text":  "(3) in-process COM",
                          "textAlign":  "center",
                          "verticalAlign":  "top",
@@ -1482,9 +1482,9 @@
                      {
                          "id":  "c1",
                          "type":  "text",
-                         "x":  86,
+                         "x":  80,
                          "y":  696,
-                         "width":  800,
+                         "width":  900,
                          "height":  22,
                          "angle":  0,
                          "strokeColor":  "#343a40",
@@ -1499,9 +1499,9 @@
                                       ],
                          "frameId":  null,
                          "roundness":  null,
-                         "seed":  203454984,
+                         "seed":  1572035350,
                          "version":  1,
-                         "versionNonce":  1536515939,
+                         "versionNonce":  1066668017,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -1510,7 +1510,7 @@
                          "link":  null,
                          "locked":  false,
                          "fontSize":  18,
-                         "fontFamily": 2,
+                         "fontFamily":  2,
                          "text":  "Who starts the MCP server?",
                          "textAlign":  "left",
                          "verticalAlign":  "top",
@@ -1522,9 +1522,9 @@
                      {
                          "id":  "c2",
                          "type":  "text",
-                         "x":  86,
+                         "x":  80,
                          "y":  728,
-                         "width":  1340,
+                         "width":  1460,
                          "height":  19,
                          "angle":  0,
                          "strokeColor":  "#495057",
@@ -1539,9 +1539,9 @@
                                       ],
                          "frameId":  null,
                          "roundness":  null,
-                         "seed":  516136582,
+                         "seed":  445263547,
                          "version":  1,
-                         "versionNonce":  593008238,
+                         "versionNonce":  2055721307,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -1550,21 +1550,21 @@
                          "link":  null,
                          "locked":  false,
                          "fontSize":  15,
-                         "fontFamily": 2,
-                         "text":  "The AI client launches it - it spawns MCP3.exe as a child process and speaks MCP over the",
+                         "fontFamily":  2,
+                         "text":  "The AI client launches it - it spawns MCP3.exe as a child process and speaks MCP over the process stdin/stdout, using the",
                          "textAlign":  "left",
                          "verticalAlign":  "top",
                          "containerId":  null,
-                         "originalText":  "The AI client launches it - it spawns MCP3.exe as a child process and speaks MCP over the",
+                         "originalText":  "The AI client launches it - it spawns MCP3.exe as a child process and speaks MCP over the process stdin/stdout, using the",
                          "lineHeight":  1.25,
                          "baseline":  12
                      },
                      {
                          "id":  "c3",
                          "type":  "text",
-                         "x":  86,
+                         "x":  80,
                          "y":  752,
-                         "width":  1340,
+                         "width":  1460,
                          "height":  19,
                          "angle":  0,
                          "strokeColor":  "#495057",
@@ -1579,9 +1579,9 @@
                                       ],
                          "frameId":  null,
                          "roundness":  null,
-                         "seed":  303798060,
+                         "seed":  501295785,
                          "version":  1,
-                         "versionNonce":  1952476103,
+                         "versionNonce":  1750907797,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -1590,21 +1590,21 @@
                          "link":  null,
                          "locked":  false,
                          "fontSize":  15,
-                         "fontFamily": 2,
-                         "text":  "process\u0027s stdin/stdout, using the command in claude_desktop_config.json. There is no Windows",
+                         "fontFamily":  2,
+                         "text":  "command in claude_desktop_config.json. There is no Windows service and no network port - just one short-lived server",
                          "textAlign":  "left",
                          "verticalAlign":  "top",
                          "containerId":  null,
-                         "originalText":  "process\u0027s stdin/stdout, using the command in claude_desktop_config.json. There is no Windows",
+                         "originalText":  "command in claude_desktop_config.json. There is no Windows service and no network port - just one short-lived server",
                          "lineHeight":  1.25,
                          "baseline":  12
                      },
                      {
                          "id":  "c4",
                          "type":  "text",
-                         "x":  86,
+                         "x":  80,
                          "y":  776,
-                         "width":  1340,
+                         "width":  1460,
                          "height":  19,
                          "angle":  0,
                          "strokeColor":  "#495057",
@@ -1619,9 +1619,9 @@
                                       ],
                          "frameId":  null,
                          "roundness":  null,
-                         "seed":  298196052,
+                         "seed":  1851915513,
                          "version":  1,
-                         "versionNonce":  1093568167,
+                         "versionNonce":  1818098070,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -1630,59 +1630,19 @@
                          "link":  null,
                          "locked":  false,
                          "fontSize":  15,
-                         "fontFamily": 2,
-                         "text":  "service and no network port - one short-lived server process per client session, which then",
+                         "fontFamily":  2,
+                         "text":  "process per client session, which then connects to the always-running add-in inside Enterprise Architect.",
                          "textAlign":  "left",
                          "verticalAlign":  "top",
                          "containerId":  null,
-                         "originalText":  "service and no network port - one short-lived server process per client session, which then",
-                         "lineHeight":  1.25,
-                         "baseline":  12
-                     },
-                     {
-                         "id":  "c5",
-                         "type":  "text",
-                         "x":  86,
-                         "y":  800,
-                         "width":  1340,
-                         "height":  19,
-                         "angle":  0,
-                         "strokeColor":  "#495057",
-                         "backgroundColor":  "transparent",
-                         "fillStyle":  "solid",
-                         "strokeWidth":  1,
-                         "strokeStyle":  "solid",
-                         "roughness":  1,
-                         "opacity":  100,
-                         "groupIds":  [
-
-                                      ],
-                         "frameId":  null,
-                         "roundness":  null,
-                         "seed":  882689739,
-                         "version":  1,
-                         "versionNonce":  1853475745,
-                         "isDeleted":  false,
-                         "boundElements":  [
-
-                                           ],
-                         "updated":  1,
-                         "link":  null,
-                         "locked":  false,
-                         "fontSize":  15,
-                         "fontFamily": 2,
-                         "text":  "connects to the always-running add-in inside Enterprise Architect.",
-                         "textAlign":  "left",
-                         "verticalAlign":  "top",
-                         "containerId":  null,
-                         "originalText":  "connects to the always-running add-in inside Enterprise Architect.",
+                         "originalText":  "process per client session, which then connects to the always-running add-in inside Enterprise Architect.",
                          "lineHeight":  1.25,
                          "baseline":  12
                      },
                      {
                          "id":  "l1",
                          "type":  "text",
-                         "x":  330,
+                         "x":  380,
                          "y":  848,
                          "width":  400,
                          "height":  18,
@@ -1699,9 +1659,9 @@
                                       ],
                          "frameId":  null,
                          "roundness":  null,
-                         "seed":  1898051133,
+                         "seed":  703329481,
                          "version":  1,
-                         "versionNonce":  411845075,
+                         "versionNonce":  293224967,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -1710,7 +1670,7 @@
                          "link":  null,
                          "locked":  false,
                          "fontSize":  14,
-                         "fontFamily": 2,
+                         "fontFamily":  2,
                          "text":  "Native ARM64 - built by this project",
                          "textAlign":  "left",
                          "verticalAlign":  "top",
@@ -1722,9 +1682,9 @@
                      {
                          "id":  "l2",
                          "type":  "text",
-                         "x":  790,
+                         "x":  860,
                          "y":  848,
-                         "width":  600,
+                         "width":  640,
                          "height":  18,
                          "angle":  0,
                          "strokeColor":  "#343a40",
@@ -1739,9 +1699,9 @@
                                       ],
                          "frameId":  null,
                          "roundness":  null,
-                         "seed":  1196814196,
+                         "seed":  1207290712,
                          "version":  1,
-                         "versionNonce":  1021608954,
+                         "versionNonce":  139686428,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -1750,7 +1710,7 @@
                          "link":  null,
                          "locked":  false,
                          "fontSize":  14,
-                         "fontFamily": 2,
+                         "fontFamily":  2,
                          "text":  "Emulated x86 - Sparx Enterprise Architect + add-in (unchanged)",
                          "textAlign":  "left",
                          "verticalAlign":  "top",
@@ -1762,9 +1722,9 @@
                      {
                          "id":  "ar1",
                          "type":  "arrow",
-                         "x":  352,
+                         "x":  332,
                          "y":  385,
-                         "width":  164,
+                         "width":  256,
                          "height":  0,
                          "angle":  0,
                          "strokeColor":  "#343a40",
@@ -1781,9 +1741,9 @@
                          "roundness":  {
                                            "type":  2
                                        },
-                         "seed":  1782596874,
+                         "seed":  1638727491,
                          "version":  1,
-                         "versionNonce":  1132041729,
+                         "versionNonce":  1144478930,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -1797,7 +1757,7 @@
                                             0
                                         ],
                                         [
-                                            164,
+                                            256,
                                             0
                                         ]
                                     ],
@@ -1810,9 +1770,9 @@
                      {
                          "id":  "ar2",
                          "type":  "arrow",
-                         "x":  842,
+                         "x":  912,
                          "y":  362,
-                         "width":  154,
+                         "width":  196,
                          "height":  0,
                          "angle":  0,
                          "strokeColor":  "#343a40",
@@ -1829,9 +1789,9 @@
                          "roundness":  {
                                            "type":  2
                                        },
-                         "seed":  124001763,
+                         "seed":  1473806658,
                          "version":  1,
-                         "versionNonce":  18798268,
+                         "versionNonce":  2003846277,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -1845,7 +1805,7 @@
                                             0
                                         ],
                                         [
-                                            154,
+                                            196,
                                             0
                                         ]
                                     ],
@@ -1858,7 +1818,7 @@
                      {
                          "id":  "ar3",
                          "type":  "arrow",
-                         "x":  1150,
+                         "x":  1260,
                          "y":  440,
                          "width":  0,
                          "height":  44,
@@ -1877,9 +1837,9 @@
                          "roundness":  {
                                            "type":  2
                                        },
-                         "seed":  1434120025,
+                         "seed":  1555507572,
                          "version":  1,
-                         "versionNonce":  1882381242,
+                         "versionNonce":  2050343486,
                          "isDeleted":  false,
                          "boundElements":  [
 
@@ -1912,4 +1872,3 @@
 
               }
 }
-
