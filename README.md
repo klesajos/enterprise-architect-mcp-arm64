@@ -73,8 +73,11 @@ add-in shows up whether you run 32-bit EA (`EA400`) or 64-bit EA (`EA64`) under 
 - **.NET SDK 9.0+** — <https://dotnet.microsoft.com/download/dotnet/9.0> (the arm64 build also needs
   the **.NET 9 arm64 *runtime*** at install/run time; the apphost will prompt with a download link if
   it's missing).
-- **The official Sparx MSI** — download from <https://www.sparxsystems.jp/en/MCP/> (the **x64** MSI
-  is recommended; the x86 one also works since the managed payload is identical).
+- **The official Sparx MSI** — download it yourself from Sparx Systems (this repo ships none):
+  - Product page: <https://www.sparxsystems.jp/en/MCP/> · release notes: <https://www.sparxsystems.jp/en/MCP/releases.htm>
+  - Direct downloads: **x64** (recommended) <https://www.sparxsystems.jp/en/MCP/bin/MCP_EA_x64.msi>
+    · **x86** <https://www.sparxsystems.jp/en/MCP/bin/MCP_EA_x86.msi>
+  - Either works as the source — the managed payload is identical; `build.ps1` only swaps the apphost.
 - WiX is **not** a manual prerequisite — it's pinned as a local `dotnet` tool
   (`.config/dotnet-tools.json`) and restored automatically by the build.
 
