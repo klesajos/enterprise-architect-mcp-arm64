@@ -99,20 +99,74 @@ Then:
 
 1. Open **Enterprise Architect** with a project, go to **Specialize ▸ Add-Ins ▸ Manage Add-Ins**,
    and confirm **MCPAddin** appears. Tick **Load on Startup**.
-2. Point your MCP client at the installed server. Example for **Claude Desktop**
-   (`%APPDATA%\Claude\claude_desktop_config.json`):
+2. Point your MCP client at the installed server (see below).
 
-   ```json
-   {
-     "mcpServers": {
-       "enterprise-architect": {
-         "command": "C:\\Program Files\\Sparx Systems\\EA\\MCP_Server\\MCP3.exe"
-       }
-     }
-   }
-   ```
+> **EA must be running** with the add-in loaded whenever you use the tools: the server connects to
+> the add-in *inside* EA over a named pipe. The MCP client **spawns the server for you** — you never
+> launch `MCP3.exe` manually.
 
-   Fully quit and reopen the client. With EA running, the server's tools become available.
+## Connect your MCP client
+
+The server is a standard **stdio** MCP server, so every client uses the same `command` + `args`:
+
+- **`command`**: `C:\Program Files\Sparx Systems\EA\MCP_Server\MCP3.exe`
+- **`args`** (optional): `-enableEdit` (allow write/modify tools, not just read) and
+  `-setTimeout 60` (per-operation timeout, seconds).
+
+After any config change, **fully restart the client** so it re-spawns the server.
+
+### Claude Desktop
+
+Edit `%APPDATA%\Claude\claude_desktop_config.json` (create it if missing), then fully quit and
+reopen the app:
+
+```json
+{
+  "mcpServers": {
+    "enterprise-architect": {
+      "command": "C:\\Program Files\\Sparx Systems\\EA\\MCP_Server\\MCP3.exe",
+      "args": ["-enableEdit", "-setTimeout", "60"]
+    }
+  }
+}
+```
+
+### Claude Code (CLI)
+
+One command — pick the scope (`user` = all your projects, recommended; `local` = just this project,
+private; `project` = shared via a committed file). Everything after `--` is passed to `MCP3.exe`:
+
+```bash
+claude mcp add --transport stdio --scope user enterprise-architect ^
+  -- "C:\Program Files\Sparx Systems\EA\MCP_Server\MCP3.exe" -enableEdit -setTimeout 60
+```
+
+Verify with `claude mcp list` (should show `enterprise-architect ✓`) or `/mcp` inside a session.
+
+### Claude Code — project-scoped (shared with a repo)
+
+Put a file named **`.mcp.json`** in the **project root** (commit it to share with the team). Note the
+extra `"type": "stdio"` field that Claude Code expects:
+
+```json
+{
+  "mcpServers": {
+    "enterprise-architect": {
+      "type": "stdio",
+      "command": "C:\\Program Files\\Sparx Systems\\EA\\MCP_Server\\MCP3.exe",
+      "args": ["-enableEdit", "-setTimeout", "60"]
+    }
+  }
+}
+```
+
+The first time you open Claude Code in that project it will ask you to **approve** the server from
+`.mcp.json` (reset later with `claude mcp reset-project-choices`).
+
+> **Sharing across machines:** the `command` is an absolute Windows path. If teammates installed EA
+> elsewhere (or aren't all on Windows), have each set an environment variable and reference it instead,
+> e.g. `"command": "${MCP_EA_PATH}"`. Each client config (Claude Desktop vs Claude Code) is separate —
+> they do **not** share MCP settings.
 
 ## How it works (internals)
 
