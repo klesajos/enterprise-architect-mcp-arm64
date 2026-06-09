@@ -24,6 +24,11 @@ on:
 permissions:
   contents: read
 
+# Run the JS-based actions (checkout, setup-dotnet) on Node.js 24. They are Node 24
+# compatible; this silences the "Node.js 20 actions are deprecated" warning.
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 concurrency:
   group: build-${{ github.ref }}
   cancel-in-progress: true
