@@ -1,0 +1,76 @@
+name: Build against latest Sparx MSI
+
+# Verifies the repackaging tooling still produces a valid native ARM64 MSI from the
+# CURRENT official Sparx installer (the download URL is unversioned = always latest).
+# This catches breakage when Sparx ships a new version.
+#
+# NOTE: the runner is x64 Windows, so this BUILDS the ARM64 MSI (cross-target) and
+# validates it; it cannot install/run it (that needs real ARM64 hardware). No MSI is
+# uploaded anywhere - it contains Sparx's proprietary binaries, which are never redistributed.
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'        # every Monday 06:00 UTC
+  workflow_dispatch:            # manual run button
+  push:
+    branches: [ main ]
+    paths:                      # re-test the tooling itself when it changes
+      - 'build.ps1'
+      - 'src/**'
+      - 'apphost/**'
+      - '.config/**'
+      - '.github/workflows/build.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        source: [x64, x86]      # both official installers share the managed payload
+    name: build from ${{ matrix.source }} MSI
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET 9 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Download latest official Sparx MSI (${{ matrix.source }})
+        shell: pwsh
+        run: |
+          $url = 'https://www.sparxsystems.jp/en/MCP/bin/MCP_EA_${{ matrix.source }}.msi'
+          $dst = Join-Path $env:RUNNER_TEMP 'MCP_EA_source.msi'
+          Write-Host "Downloading $url"
+          Invoke-WebRequest -Uri $url -OutFile $dst -UseBasicParsing -MaximumRedirection 5 `
+            -Headers @{ 'User-Agent' = 'enterprise-architect-mcp-arm64-ci' }
+          $len = (Get-Item $dst).Length
+          Write-Host "Downloaded $len bytes"
+          if ($len -lt 500000) { throw "Download looks too small ($len bytes) - URL changed or blocked?" }
+          "MSI_PATH=$dst" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
+      - name: Build native ARM64 MSI
+        shell: pwsh
+        run: ./build.ps1 -SourceMsi "$env:MSI_PATH"
+
+      - name: Verify the output is a valid Arm64 MSI
+        shell: pwsh
+        run: |
+          $msi = 'dist/MCP_EA_arm64.msi'
+          if (-not (Test-Path $msi)) { throw 'ARM64 MSI was not produced' }
+          $full = (Resolve-Path $msi).Path
+          $inst = New-Object -ComObject WindowsInstaller.Installer
+          $si = $inst.GetType().InvokeMember('SummaryInformation','GetProperty',$null,$inst,@($full,0))
+          $tpl = [string]$si.GetType().InvokeMember('Property','GetProperty',$null,$si,@([int]7))
+          $len = (Get-Item $full).Length
+          Write-Host "Produced $msi ($len bytes) - Template: $tpl"
+          if ($tpl -notmatch 'Arm64') { throw "Expected an Arm64 template, got '$tpl'" }
+          Write-Host "::notice::OK - built a valid Arm64 MSI from the ${{ matrix.source }} source ($len bytes, Template $tpl)"

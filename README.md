@@ -1,5 +1,6 @@
 # MCP Server for Enterprise Architect — native **Windows ARM64** repackage
 
+[![Build against latest Sparx MSI](https://github.com/klesajos/enterprise-architect-mcp-arm64/actions/workflows/build.yml/badge.svg)](https://github.com/klesajos/enterprise-architect-mcp-arm64/actions/workflows/build.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 ![Platform: Windows on ARM64](https://img.shields.io/badge/platform-Windows%20on%20ARM64-0078D6?logo=windows&logoColor=white)
 ![Built with WiX + .NET 9](https://img.shields.io/badge/built%20with-WiX%20%2B%20.NET%209-512BD4?logo=dotnet&logoColor=white)
