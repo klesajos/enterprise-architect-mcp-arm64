@@ -24,28 +24,23 @@ on:
 permissions:
   contents: read
 
-# Run the JS-based actions (checkout, setup-dotnet) on Node.js 24. They are Node 24
-# compatible; this silences the "Node.js 20 actions are deprecated" warning.
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 concurrency:
   group: build-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   build:
-    runs-on: windows-2025
+    runs-on: windows-latest
     strategy:
       fail-fast: false
       matrix:
         source: [x64, x86]      # both official installers share the managed payload
     name: build from ${{ matrix.source }} MSI
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Set up .NET 9 SDK
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '9.0.x'
 
