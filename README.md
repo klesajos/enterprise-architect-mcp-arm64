@@ -105,6 +105,29 @@ Then:
 > the add-in *inside* EA over a named pipe. The MCP client **spawns the server for you** — you never
 > launch `MCP3.exe` manually.
 
+## ⚠️ Run only ONE Enterprise Architect instance
+
+> [!WARNING]
+> The MCP server connects to the **first Enterprise Architect instance that was started**, and it
+> stays bound to that one. It does **not** follow your focus or the most recently opened window.
+>
+> So if a **second EA instance** is running, the server will operate on the **wrong one**. The most
+> common way this happens: you already have EA open, then you **open another project** in a way that
+> **launches a new EA process** — now there are two. The server keeps talking to the *first*
+> (possibly empty / different) instance, while you're looking at the project in the *second* one, and
+> your tool calls seem to hit the "wrong" or an empty model.
+>
+> **To work correctly, keep exactly one EA instance running:**
+> - Open additional projects **inside the existing EA window** (`File ▸ Open Project`) instead of
+>   starting a new EA process.
+> - Don't open `.qea`/`.eapx` files by double-clicking if EA is already open and that would spawn a
+>   second instance — switch projects within the running instance instead.
+> - Check Task Manager for more than one `EA.exe` and close the extras.
+>
+> **If it's already talking to the wrong instance:** close **all** EA instances, then start a single
+> EA with the project you want. (The server re-attaches on its next call; if needed, restart your MCP
+> client so it re-spawns the server cleanly.)
+
 ## Connect your MCP client
 
 The server is a standard **stdio** MCP server, so every client uses the same `command` + `args`:
