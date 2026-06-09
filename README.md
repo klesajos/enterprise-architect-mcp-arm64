@@ -11,6 +11,21 @@ Architect* from the official x86/x64 release.
 
 ---
 
+## How it works
+
+![Architecture diagram: the AI client spawns the MCP server (MCP3.exe) over stdio; the server bridges to the MCP_EA.dll add-in inside Enterprise Architect over a named pipe; the add-in reaches the EA Repository via in-process COM](docs/architecture.png)
+
+The AI client (Claude Desktop, Claude Code, …) **starts the MCP server itself** — it spawns
+`MCP3.exe` as a child process and speaks MCP over stdio. The server then connects over a **named
+pipe** to the `MCP_EA.dll` add-in running *inside* Enterprise Architect, which reaches the live model
+through in-process **COM**. Because that bridge is a named pipe, the **native ARM64 server works with
+the (emulated x86) EA add-in unchanged**.
+
+> Diagram source (editable): [`docs/architecture.excalidraw`](docs/architecture.excalidraw) — open it
+> at [excalidraw.com](https://excalidraw.com). The PNG above is exported from it.
+
+---
+
 ## Why this exists
 
 Sparx ships the MCP server only as **x86** (`Intel`) and **x64** MSIs. On Windows on ARM neither
