@@ -1,5 +1,11 @@
 # MCP Server for Enterprise Architect — native **Windows ARM64** repackage
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+![Platform: Windows on ARM64](https://img.shields.io/badge/platform-Windows%20on%20ARM64-0078D6?logo=windows&logoColor=white)
+![Built with WiX + .NET 9](https://img.shields.io/badge/built%20with-WiX%20%2B%20.NET%209-512BD4?logo=dotnet&logoColor=white)
+[![Repackages: Sparx EA MCP v2.7.1](https://img.shields.io/badge/repackages-Sparx%20EA%20MCP%20v2.7.1-orange)](https://www.sparxsystems.jp/en/MCP/)
+![Status: unofficial](https://img.shields.io/badge/status-unofficial-lightgrey)
+
 Build a **native Windows on ARM64** installer for Sparx Systems' *MCP Server for Enterprise
 Architect* from the official x86/x64 release.
 
@@ -194,6 +200,15 @@ The first time you open Claude Code in that project it will ask you to **approve
 > e.g. `"command": "${MCP_EA_PATH}"`. Each client config (Claude Desktop vs Claude Code) is separate —
 > they do **not** share MCP settings.
 
+## Cheat sheets
+
+Quick references for the EA MCP tools (what they do, common prompts, gotchas):
+
+- 🇬🇧 English — [`docs/EA-MCP-cheatsheet-en.md`](docs/EA-MCP-cheatsheet-en.md)
+  ([PDF](docs/EA-MCP-cheatsheet-en.pdf))
+- 🇨🇿 Čeština — [`docs/EA-MCP-cheatsheet-cs.md`](docs/EA-MCP-cheatsheet-cs.md)
+  ([PDF](docs/EA-MCP-cheatsheet-cs.pdf))
+
 ## How it works (internals)
 
 `build.ps1`:
@@ -214,6 +229,7 @@ build.ps1                     # one-shot build script (start here)
 src/MCP_EA_arm64.wxs          # WiX authoring for the ARM64 MSI
 apphost/                      # throwaway project that mints the arm64 MCP3.exe apphost
 .config/dotnet-tools.json     # pins WiX as a local dotnet tool
+docs/                         # architecture diagram (+ .excalidraw source) and cheat sheets
 ```
 
 ## Notes & caveats
