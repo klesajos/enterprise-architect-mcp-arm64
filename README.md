@@ -228,4 +228,5 @@ apphost/                      # throwaway project that mints the arm64 MCP3.exe 
 ## License
 
 Build tooling in this repo: **MIT** (see [LICENSE](LICENSE)). The MIT license covers *only* this
-tooling — **not** the Sparx product, which it neither contains nor relicenses.
+tooling — **not** the Sparx product, which it neither contains nor relicenses. See [NOTICE](NOTICE)
+for the exact scope and attribution.

@@ -1,0 +1,22 @@
+MCP Server for Enterprise Architect - native Windows ARM64 repackage
+Copyright (c) 2026 Josef Klesa (klesajos)
+
+SCOPE OF THE MIT LICENSE
+------------------------
+The MIT License in the LICENSE file applies ONLY to the build tooling in this
+repository: the PowerShell build script (build.ps1), the WiX authoring under
+src/, the apphost project under apphost/, the documentation, and the diagram.
+
+It does NOT apply to "MCP Server for Enterprise Architect" itself. That product
+is created and distributed by Sparx Systems Japan and remains their property
+under their own license terms. This repository contains NONE of Sparx's
+binaries - they are downloaded by the user and harvested at build time from a
+copy of the official installer that the user supplies.
+
+This is an independent, unofficial project for interoperability on Windows ARM64.
+It is not affiliated with or endorsed by Sparx Systems.
+
+Original product and official downloads:
+  https://www.sparxsystems.jp/en/MCP/
+
+Trademarks (Sparx Systems, Enterprise Architect) belong to their respective owners.
