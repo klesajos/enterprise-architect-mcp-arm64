@@ -16,3 +16,11 @@
 Thumbs.db
 .DS_Store
 .vs/
+
+# Enterprise Architect models / lock files (local test data - never commit)
+*.eap
+*.eapx
+*.feap
+*.qea
+*.qeax
+*.ldb

@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 ![Platform: Windows on ARM64](https://img.shields.io/badge/platform-Windows%20on%20ARM64-0078D6?logo=windows&logoColor=white)
 ![Built with WiX + .NET 9](https://img.shields.io/badge/built%20with-WiX%20%2B%20.NET%209-512BD4?logo=dotnet&logoColor=white)
-[![Repackages: Sparx EA MCP v2.7.1](https://img.shields.io/badge/repackages-Sparx%20EA%20MCP%20v2.7.1-orange)](https://www.sparxsystems.jp/en/MCP/)
+[![Repackages: Sparx EA MCP](https://img.shields.io/badge/repackages-Sparx%20EA%20MCP-orange)](https://www.sparxsystems.jp/en/MCP/)
 ![Status: unofficial](https://img.shields.io/badge/status-unofficial-lightgrey)
 
 Build a **native Windows on ARM64** installer for Sparx Systems' *MCP Server for Enterprise
@@ -20,19 +20,21 @@ Architect* from the official x86/x64 release.
 
 ## Quick start
 
-> Needs **Windows on ARM64** + the [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0).
-> Full details in [Prerequisites](#prerequisites). WiX is restored automatically.
+> **Install/run** needs **Windows on ARM64** with the **.NET 9 (Arm64) runtime**. You can *build* on
+> any Windows that has the [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0); WiX is
+> restored automatically. Full details in [Prerequisites](#prerequisites).
 
 ```powershell
 # 1) Download the official Sparx installer (x64) — https://www.sparxsystems.jp/en/MCP/
-#    e.g. to %USERPROFILE%\Downloads\MCP_EA_x64.msi   (this repo ships no Sparx binaries)
+#    e.g. to $HOME\Downloads\MCP_EA_x64.msi   (this repo ships no Sparx binaries)
 
 # 2) Build the native ARM64 MSI
 git clone https://github.com/klesajos/enterprise-architect-mcp-arm64.git
 cd enterprise-architect-mcp-arm64
-./build.ps1 -SourceMsi "$HOME\Downloads\MCP_EA_x64.msi"      # -> dist\MCP_EA_arm64.msi
+# (if PowerShell blocks scripts, prefix with:  powershell -ExecutionPolicy Bypass -File )
+.\build.ps1 -SourceMsi "$HOME\Downloads\MCP_EA_x64.msi"      # -> dist\MCP_EA_arm64.msi
 
-# 3) Install it
+# 3) Install it   (uninstall later with:  msiexec /x dist\MCP_EA_arm64.msi )
 msiexec /i dist\MCP_EA_arm64.msi
 ```
 
@@ -121,6 +123,10 @@ cd enterprise-architect-mcp-arm64
 .\build.ps1 -SourceMsi "$HOME\Downloads\MCP_EA_x64.msi"
 ```
 
+> If PowerShell refuses with *“running scripts is disabled on this system”*, run it as
+> `powershell -ExecutionPolicy Bypass -File .\build.ps1 -SourceMsi "$HOME\Downloads\MCP_EA_x64.msi"`
+> (or `Set-ExecutionPolicy -Scope Process Bypass` once per session).
+
 Output: `dist\MCP_EA_arm64.msi`. The script auto-detects the product version, add-in ProgID, CLSID
 and assembly identity from *your* MSI, so it should keep working for future Sparx releases.
 
@@ -194,17 +200,17 @@ reopen the app:
 One command — pick the scope (`user` = all your projects, recommended; `local` = just this project,
 private; `project` = shared via a committed file). Everything after `--` is passed to `MCP3.exe`:
 
-```bash
-claude mcp add --transport stdio --scope user enterprise-architect ^
-  -- "C:\Program Files\Sparx Systems\EA\MCP_Server\MCP3.exe" -enableEdit -setTimeout 60
+```powershell
+claude mcp add --transport stdio --scope user enterprise-architect -- "C:\Program Files\Sparx Systems\EA\MCP_Server\MCP3.exe" -enableEdit -setTimeout 60
 ```
 
 Verify with `claude mcp list` (should show `enterprise-architect ✓`) or `/mcp` inside a session.
 
 ### Claude Code — project-scoped (shared with a repo)
 
-Put a file named **`.mcp.json`** in the **project root** (commit it to share with the team). Note the
-extra `"type": "stdio"` field that Claude Code expects:
+Put a file named **`.mcp.json`** in the **root of *your own* project** (the repo where you use Claude
+Code — *not* this build repo) and commit it to share with the team. Note the extra `"type": "stdio"`
+field that Claude Code expects:
 
 ```json
 {
@@ -226,6 +232,27 @@ The first time you open Claude Code in that project it will ask you to **approve
 > e.g. `"command": "${MCP_EA_PATH}"`. Each client config (Claude Desktop vs Claude Code) is separate —
 > they do **not** share MCP settings.
 
+## Troubleshooting
+
+- **The add-in doesn't appear in *Manage Add-Ins*.** EA reads add-in registrations only at startup —
+  fully close and reopen EA after installing. This MSI registers for **both** 32-bit (`EA400`) and
+  64-bit (`EA64`) EA, so a bitness mismatch shouldn't be the cause; confirm `MCP_EA.dll` exists in
+  `C:\Program Files\Sparx Systems\EA\MCP_Addin\`.
+- **Tools fail with *“Failed to connect to Enterprise Architect”* / time out.** Almost always means
+  **no project is open in EA** (or EA isn't running). Open a repository first, then retry. For heavy
+  operations raise the timeout, e.g. `-setTimeout 600` (EA runs under emulation, so it can be slow).
+- **Tool calls hit the wrong / an empty model.** You have more than one EA instance running — see
+  [Run only ONE Enterprise Architect instance](#run-only-one-enterprise-architect-instance).
+- **The client shows no server/tools.** Fully restart the MCP client after editing its config (it
+  spawns the server at startup). Check `claude mcp list` (Claude Code) or the client's MCP log, and
+  verify the `command` path exists.
+- ***“.NET runtime not found”* when the server starts.** Install the **.NET 9 Desktop Runtime (Arm64)**:
+  <https://dotnet.microsoft.com/download/dotnet/9.0>.
+- **SmartScreen / *“unknown publisher”* on install.** Expected — the rebuilt MSI is unsigned (it can't
+  carry Sparx's signature). Choose *More info ▸ Run anyway*, or self-sign it.
+- **`build.ps1` won't run (*“running scripts is disabled”*).** Use
+  `powershell -ExecutionPolicy Bypass -File .\build.ps1 -SourceMsi <path-to-official-msi>`.
+
 ## Cheat sheets
 
 Quick references for the EA MCP tools (what they do, common prompts, gotchas):
@@ -235,7 +262,7 @@ Quick references for the EA MCP tools (what they do, common prompts, gotchas):
 - 🇨🇿 Čeština — [`docs/EA-MCP-cheatsheet-cs.md`](docs/EA-MCP-cheatsheet-cs.md)
   ([PDF](docs/EA-MCP-cheatsheet-cs.pdf))
 
-## How it works (internals)
+## How the build works
 
 `build.ps1`:
 
@@ -248,12 +275,17 @@ Quick references for the EA MCP tools (what they do, common prompts, gotchas):
 4. **Builds the MSI** from `src/MCP_EA_arm64.wxs` with WiX (`-arch arm64`), injecting the
    auto-detected version/ProgID/CLSID/assembly values.
 
+The architecture image (`docs/architecture.png`) is rasterized from `docs/architecture.svg` by
+[`tools/render-diagram.ps1`](tools/render-diagram.ps1) (headless Edge). Run it after editing the SVG —
+or after re-exporting an SVG from `docs/architecture.excalidraw` — to keep the PNG in sync.
+
 ## Repository layout
 
 ```
 build.ps1                     # one-shot build script (start here)
 src/MCP_EA_arm64.wxs          # WiX authoring for the ARM64 MSI
 apphost/                      # throwaway project that mints the arm64 MCP3.exe apphost
+tools/render-diagram.ps1      # regenerate docs/architecture.png from the SVG (headless Edge)
 .config/dotnet-tools.json     # pins WiX as a local dotnet tool
 docs/                         # architecture diagram (+ .excalidraw source) and cheat sheets
 ```
@@ -262,6 +294,9 @@ docs/                         # architecture diagram (+ .excalidraw source) and 
 
 - The produced MSI is **unsigned** — it cannot carry Sparx's original signature. Windows SmartScreen
   may warn on first run. Build it yourself / use at your own discretion.
+- It shares its **UpgradeCode** with the official installer, so installing it **replaces** any existing
+  official x86/x64 install of the same product (and vice-versa) — the two cannot coexist. Uninstall
+  with `msiexec /x dist\MCP_EA_arm64.msi` or via *Settings ▸ Apps*.
 - This is an **independent, unofficial** repackage for interoperability on ARM64. It is **not
   affiliated with or endorsed by Sparx Systems.** Please support Sparx and obtain the product from
   them: <https://www.sparxsystems.jp/en/MCP/>
