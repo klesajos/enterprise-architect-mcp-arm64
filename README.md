@@ -84,8 +84,8 @@ add-in shows up whether you run 32-bit EA (`EA400`) or 64-bit EA (`EA64`) under 
 ## Build
 
 ```powershell
-git clone https://github.com/klesajos/<this-repo>.git
-cd <this-repo>
+git clone https://github.com/klesajos/enterprise-architect-mcp-arm64.git
+cd enterprise-architect-mcp-arm64
 .\build.ps1 -SourceMsi "$HOME\Downloads\MCP_EA_x64.msi"
 ```
 
