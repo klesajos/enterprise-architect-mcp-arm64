@@ -1,91 +1,87 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="820" viewBox="0 0 1280 820" font-family="'Segoe Print','Comic Sans MS','Comic Sans',Chalkboard,Comic Neue,cursive">
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="900" viewBox="0 0 1500 900" font-family="'Segoe Print','Comic Sans MS','Comic Sans',Chalkboard,Comic Neue,cursive">
   <defs>
-    <marker id="arrow" markerWidth="12" markerHeight="12" refX="8" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+    <marker id="arrow" markerWidth="13" markerHeight="13" refX="8" refY="4" orient="auto" markerUnits="userSpaceOnUse">
       <path d="M0,0 L9,4 L0,8" fill="none" stroke="#343a40" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     </marker>
     <style>
-      .h   { font-weight: 700; }
-      .mono{ font-family: 'Cascadia Code','Consolas',monospace; }
-      .t   { fill: #343a40; }
-      .mut { fill: #868e96; }
-      text { fill: #343a40; }
-      .lbl { font-size: 16px; }
+      text { fill:#343a40; }
+      .h    { font-weight:700; }
+      .mut  { fill:#868e96; }
+      .body { fill:#495057; }
+      .mono { font-family:'Cascadia Code','Consolas',monospace; }
     </style>
   </defs>
 
-  <rect x="0" y="0" width="1280" height="820" fill="#ffffff"/>
+  <rect x="0" y="0" width="1500" height="900" fill="#ffffff"/>
 
   <!-- Title -->
-  <text x="640" y="50" text-anchor="middle" class="h" font-size="30">How the MCP integration with Enterprise Architect works</text>
-  <text x="640" y="82" text-anchor="middle" class="mut" font-size="17">native Windows ARM64 build &#8212; who runs the MCP server, and how</text>
+  <text x="750" y="50" text-anchor="middle" class="h" font-size="30">How the MCP integration with Enterprise Architect works</text>
+  <text x="750" y="84" text-anchor="middle" class="mut" font-size="17">native Windows ARM64 build &#8212; who runs the MCP server, and how</text>
 
-  <!-- ============ A: AI Client ============ -->
-  <rect x="60" y="300" width="300" height="180" rx="16" fill="#e7f5ff" stroke="#1971c2" stroke-width="2.5"/>
-  <text x="210" y="345" text-anchor="middle" class="h" font-size="22">AI Client</text>
-  <text x="210" y="372" text-anchor="middle" class="mut" font-size="15">(the MCP host)</text>
-  <text x="210" y="410" text-anchor="middle" font-size="16">Claude Desktop &#183; Claude Code</text>
-  <text x="210" y="436" text-anchor="middle" font-size="16">VS Code &#183; Cursor &#8230;</text>
-  <text x="210" y="465" text-anchor="middle" class="mut" font-size="13">reads claude_desktop_config.json</text>
+  <!-- ===================== AI CLIENT ===================== -->
+  <rect x="60" y="300" width="290" height="170" rx="16" fill="#e7f5ff" stroke="#1971c2" stroke-width="2.5"/>
+  <text x="205" y="346" text-anchor="middle" class="h" font-size="22">AI Client</text>
+  <text x="205" y="373" text-anchor="middle" class="mut" font-size="15">(the MCP host)</text>
+  <text x="205" y="410" text-anchor="middle" font-size="16">Claude Desktop &#183; Claude Code</text>
+  <text x="205" y="436" text-anchor="middle" font-size="16">VS Code &#183; Cursor &#8230;</text>
 
-  <!-- ============ B: MCP Server ============ -->
-  <rect x="500" y="290" width="330" height="200" rx="16" fill="#ebfbee" stroke="#2f9e44" stroke-width="2.5"/>
-  <text x="665" y="332" text-anchor="middle" class="h" font-size="22">MCP Server</text>
-  <text x="665" y="366" text-anchor="middle" class="h mono" font-size="22">MCP3.exe</text>
-  <text x="665" y="392" text-anchor="middle" class="mut" font-size="15">native .NET 9 apphost &#183; ARM64</text>
-  <text x="665" y="430" text-anchor="middle" class="mono" font-size="12.5">C:\Program Files\Sparx Systems\</text>
-  <text x="665" y="448" text-anchor="middle" class="mono" font-size="12.5">EA\MCP_Server\MCP3.exe</text>
-  <text x="665" y="476" text-anchor="middle" class="mut" font-size="13">child process &#183; one per client session</text>
+  <!-- ===================== MCP SERVER ===================== -->
+  <rect x="520" y="290" width="320" height="196" rx="16" fill="#ebfbee" stroke="#2f9e44" stroke-width="2.5"/>
+  <text x="680" y="332" text-anchor="middle" class="h" font-size="22">MCP Server</text>
+  <text x="680" y="366" text-anchor="middle" class="h mono" font-size="22">MCP3.exe</text>
+  <text x="680" y="392" text-anchor="middle" class="mut" font-size="15">native .NET 9 apphost &#183; ARM64</text>
+  <text x="680" y="424" text-anchor="middle" class="mono" font-size="12.5">C:\Program Files\Sparx Systems\</text>
+  <text x="680" y="442" text-anchor="middle" class="mono" font-size="12.5">EA\MCP_Server\MCP3.exe</text>
+  <text x="680" y="470" text-anchor="middle" class="mut" font-size="13">spawned on demand by the client</text>
 
-  <!-- ============ C: Enterprise Architect container ============ -->
-  <rect x="940" y="120" width="300" height="580" rx="18" fill="#fffdf0" stroke="#f08c00" stroke-width="2.5"/>
-  <text x="1090" y="158" text-anchor="middle" class="h" font-size="20">Enterprise Architect</text>
-  <text x="1090" y="182" text-anchor="middle" class="mut h mono" font-size="14">EA.exe</text>
-  <text x="1090" y="206" text-anchor="middle" class="mut" font-size="13.5">32-bit &#183; runs under emulation on ARM64</text>
+  <!-- ===================== ENTERPRISE ARCHITECT ===================== -->
+  <rect x="1000" y="150" width="440" height="480" rx="18" fill="#fffdf0" stroke="#f08c00" stroke-width="2.5"/>
+  <text x="1220" y="190" text-anchor="middle" class="h" font-size="20">Enterprise Architect</text>
+  <text x="1220" y="214" text-anchor="middle" class="mut h mono" font-size="14">EA.exe</text>
+  <text x="1220" y="236" text-anchor="middle" class="mut" font-size="13.5">32-bit &#183; runs under emulation on ARM64</text>
 
   <!-- add-in -->
-  <rect x="972" y="240" width="236" height="180" rx="14" fill="#f3f0ff" stroke="#6741d9" stroke-width="2.5"/>
-  <text x="1090" y="280" text-anchor="middle" class="h" font-size="19">MCP add-in</text>
-  <text x="1090" y="308" text-anchor="middle" class="h mono" font-size="17">MCP_EA.dll</text>
-  <text x="1090" y="332" text-anchor="middle" class="mut" font-size="13.5">AnyCPU &#183; .NET Framework 4.8</text>
-  <text x="1090" y="356" text-anchor="middle" class="mut" font-size="13.5">loaded in-process (COM)</text>
-  <rect x="1006" y="372" width="168" height="30" rx="8" fill="#e5dbff" stroke="#6741d9" stroke-width="1.5"/>
-  <text x="1090" y="392" text-anchor="middle" class="h" font-size="14">Named-Pipe SERVER</text>
+  <rect x="1035" y="270" width="370" height="170" rx="14" fill="#f3f0ff" stroke="#6741d9" stroke-width="2.5"/>
+  <text x="1220" y="308" text-anchor="middle" class="h" font-size="19">MCP add-in</text>
+  <text x="1220" y="336" text-anchor="middle" class="h mono" font-size="17">MCP_EA.dll</text>
+  <text x="1220" y="360" text-anchor="middle" class="mut" font-size="13.5">AnyCPU &#183; .NET Framework 4.8 &#183; in-process</text>
+  <rect x="1100" y="396" width="240" height="32" rx="9" fill="#e5dbff" stroke="#6741d9" stroke-width="1.5"/>
+  <text x="1220" y="417" text-anchor="middle" class="h" font-size="14">Named-Pipe SERVER</text>
 
   <!-- repository -->
-  <rect x="972" y="500" width="236" height="160" rx="14" fill="#e7f5ff" stroke="#1971c2" stroke-width="2.5"/>
-  <text x="1090" y="548" text-anchor="middle" class="h" font-size="19">EA Repository</text>
-  <text x="1090" y="576" text-anchor="middle" font-size="15">the live model</text>
-  <text x="1090" y="604" text-anchor="middle" class="mono" font-size="14">.qea / .eapx / DBMS</text>
+  <rect x="1035" y="488" width="370" height="120" rx="14" fill="#e7f5ff" stroke="#1971c2" stroke-width="2.5"/>
+  <text x="1220" y="528" text-anchor="middle" class="h" font-size="19">EA Repository</text>
+  <text x="1220" y="555" text-anchor="middle" font-size="15">the live model</text>
+  <text x="1220" y="580" text-anchor="middle" class="mono" font-size="14">.qea / .eapx / DBMS</text>
 
-  <!-- ============ Arrows ============ -->
-  <!-- (1) client <-> server : stdio -->
-  <line x1="360" y1="360" x2="494" y2="360" stroke="#343a40" stroke-width="2.5" marker-end="url(#arrow)"/>
-  <line x1="494" y1="392" x2="362" y2="392" stroke="#343a40" stroke-width="2.5" marker-end="url(#arrow)"/>
-  <text x="427" y="338" text-anchor="middle" class="h lbl">&#9312; spawns &amp; talks over</text>
-  <text x="427" y="423" text-anchor="middle" class="lbl">stdio &#183; MCP (JSON-RPC)</text>
+  <!-- ===================== CONNECTORS ===================== -->
+  <!-- (1) AI client <-> MCP server : stdio -->
+  <line x1="352" y1="385" x2="516" y2="385" stroke="#343a40" stroke-width="2.5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+  <rect x="348" y="336" width="172" height="30" rx="9" fill="#ffffff" stroke="#ced4da" stroke-width="1.5"/>
+  <text x="434" y="356" text-anchor="middle" class="h" font-size="14">&#9312; stdio &#183; MCP (JSON-RPC)</text>
+  <text x="434" y="410" text-anchor="middle" class="mut" font-size="12.5">request / response</text>
 
-  <!-- (2) server <-> add-in : named pipe -->
-  <line x1="830" y1="350" x2="966" y2="335" stroke="#343a40" stroke-width="2.5" marker-end="url(#arrow)"/>
-  <line x1="966" y1="372" x2="832" y2="388" stroke="#343a40" stroke-width="2.5" marker-end="url(#arrow)"/>
-  <text x="898" y="318" text-anchor="middle" class="h lbl">&#9313; Named Pipe</text>
-  <text x="898" y="416" text-anchor="middle" class="mut" font-size="13">bridges ARM64 &#8644; x86</text>
+  <!-- (2) MCP server <-> EA add-in : named pipe -->
+  <line x1="842" y1="362" x2="996" y2="362" stroke="#343a40" stroke-width="2.5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+  <rect x="844" y="312" width="150" height="30" rx="9" fill="#ffffff" stroke="#ced4da" stroke-width="1.5"/>
+  <text x="919" y="332" text-anchor="middle" class="h" font-size="14">&#9313; Named Pipe</text>
+  <text x="919" y="388" text-anchor="middle" class="mut" font-size="12.5">bridges ARM64 &#8644; x86</text>
 
-  <!-- (3) add-in -> repository : COM -->
-  <line x1="1090" y1="420" x2="1090" y2="496" stroke="#343a40" stroke-width="2.5" marker-end="url(#arrow)"/>
-  <text x="1108" y="466" text-anchor="start" class="h lbl">&#9314; in-process</text>
-  <text x="1108" y="486" text-anchor="start" class="lbl">COM automation</text>
+  <!-- (3) add-in -> repository : in-process COM -->
+  <line x1="1150" y1="440" x2="1150" y2="484" stroke="#343a40" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <rect x="1205" y="447" width="180" height="28" rx="9" fill="#ffffff" stroke="#ced4da" stroke-width="1.5"/>
+  <text x="1295" y="466" text-anchor="middle" class="h" font-size="13.5">&#9314; in-process COM</text>
 
-  <!-- ============ Callout: who runs the server ============ -->
-  <rect x="60" y="560" width="770" height="150" rx="14" fill="#ffffff" stroke="#adb5bd" stroke-width="2" stroke-dasharray="7 6"/>
-  <text x="80" y="592" class="h" font-size="18">Who starts the MCP server?</text>
-  <text x="80" y="622" font-size="15.5">The <tspan class="h">AI client launches it</tspan> &#8212; it spawns <tspan class="mono">MCP3.exe</tspan> as a child process and speaks MCP over the</text>
-  <text x="80" y="647" font-size="15.5">process&#8217;s stdin/stdout, using the <tspan class="mono">command</tspan> from <tspan class="mono">claude_desktop_config.json</tspan>. There is no</text>
-  <text x="80" y="672" font-size="15.5">Windows service and no network port: one short-lived server process per client session.</text>
-  <text x="80" y="697" class="mut" font-size="14">The server then connects to the always-running add-in inside EA via the named pipe.</text>
+  <!-- ===================== CALLOUT ===================== -->
+  <rect x="60" y="680" width="1380" height="140" rx="14" fill="#ffffff" stroke="#adb5bd" stroke-width="2" stroke-dasharray="7 6"/>
+  <text x="86" y="714" class="h" font-size="18">Who starts the MCP server?</text>
+  <text x="86" y="744" class="body" font-size="15.5">The <tspan class="h">AI client launches it</tspan> &#8212; it spawns <tspan class="mono">MCP3.exe</tspan> as a child process and speaks MCP over the process&#8217;s stdin / stdout,</text>
+  <text x="86" y="770" class="body" font-size="15.5">using the <tspan class="mono">command</tspan> in <tspan class="mono">claude_desktop_config.json</tspan>. There is no Windows service and no network port &#8212; just one</text>
+  <text x="86" y="796" class="body" font-size="15.5">short-lived server process per client session, which then connects to the always-running add-in inside Enterprise Architect.</text>
 
-  <!-- ============ Legend ============ -->
-  <rect x="300" y="752" width="22" height="22" rx="5" fill="#ebfbee" stroke="#2f9e44" stroke-width="2"/>
-  <text x="330" y="769" font-size="14.5">Native ARM64 &#8212; built by this project</text>
-  <rect x="690" y="752" width="22" height="22" rx="5" fill="#fffdf0" stroke="#f08c00" stroke-width="2"/>
-  <text x="720" y="769" font-size="14.5">Emulated x86 &#8212; Sparx Enterprise Architect + add-in (unchanged)</text>
+  <!-- ===================== LEGEND ===================== -->
+  <rect x="300" y="846" width="22" height="22" rx="5" fill="#ebfbee" stroke="#2f9e44" stroke-width="2"/>
+  <text x="330" y="863" font-size="14.5">Native ARM64 &#8212; built by this project</text>
+  <rect x="760" y="846" width="22" height="22" rx="5" fill="#fffdf0" stroke="#f08c00" stroke-width="2"/>
+  <text x="790" y="863" font-size="14.5">Emulated x86 &#8212; Sparx Enterprise Architect + add-in (unchanged)</text>
 </svg>
