@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  MCP Server for Enterprise Architect - native Windows ARM64 repackage.
+
+  This authoring rebuilds Sparx Systems' "MCP Server for Enterprise Architect" installer
+  for native Windows on ARM64. It does NOT contain any Sparx binaries: the payload is
+  harvested at build time from a copy of the official Sparx MSI that YOU supply (see
+  build.ps1 / README.md). The only binary that differs from the official x64 product is
+  MCP_Server\MCP3.exe, which build.ps1 replaces with a native arm64 .NET apphost. Every
+  managed assembly (MCP3.dll, MCP_EA.dll and dependencies) is AnyCPU/IL and reused verbatim.
+
+  Differences from the official x64 MSI:
+    * Built with -arch arm64  ->  Summary "Template" = Arm64 (installs on Windows ARM64).
+    * Native arm64 apphost (MCP3.exe).
+    * EA add-in registered for BOTH 64-bit (EAAddins64) and 32-bit (EAAddins) EA, in BOTH
+      the 64-bit and 32-bit (Wow6432Node) registry views, so EA finds it regardless of its
+      own bitness. (Sparx EA reads add-in keys from the view matching its own architecture.)
+    * The official native .NET runtime-check custom action is dropped; the apphost shows
+      its own "framework not found" prompt + download URL if the runtime is missing.
+
+  Values that change between Sparx releases are passed in as preprocessor defines by
+  build.ps1 (auto-detected from your source MSI); the defaults below match v2.7.1.
+-->
+<?ifndef ProductVersion ?><?define ProductVersion = "2.7.1" ?><?endif?>
+<?ifndef ProgId         ?><?define ProgId         = "MCP_EA.Main" ?><?endif?>
+<?ifndef Clsid          ?><?define Clsid          = "{E21767D7-E7D5-3BBC-8E51-D6393C7BA3EF}" ?><?endif?>
+<?ifndef AddinAssembly  ?><?define AddinAssembly  = "MCP_EA, Version=1.7.1.0, Culture=neutral, PublicKeyToken=null" ?><?endif?>
+<?ifndef AddinAsmVersion?><?define AddinAsmVersion = "1.7.1.0" ?><?endif?>
+<?ifndef PayloadDir     ?><?define PayloadDir     = "payload" ?><?endif?>
+
+<!-- EA "Add-In" COM component category - fixed for all Enterprise Architect add-ins -->
+<?define EaAddinCategory = "{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" ?>
+
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package
+      Name="MCP Server for Enterprise Architect (Arm64)"
+      Manufacturer="Sparx Systems Japan"
+      Version="$(var.ProductVersion)"
+      Language="1033"
+      Codepage="1252"
+      UpgradeCode="{8A3A2A15-69ED-4AC8-9B98-E07D3ADD0AFF}"
+      Scope="perMachine"
+      Compressed="yes">
+
+    <SummaryInformation Description="MCP Server for Enterprise Architect $(var.ProductVersion) (Arm64)" />
+
+    <MajorUpgrade
+        AllowSameVersionUpgrades="yes"
+        DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+
+    <MediaTemplate EmbedCab="yes" />
+
+    <!-- %ProgramFiles%\Sparx Systems\EA\{MCP_Server,MCP_Addin} -->
+    <StandardDirectory Id="ProgramFiles64Folder">
+      <Directory Id="dirSparx" Name="Sparx Systems">
+        <Directory Id="INSTALLDIR" Name="EA">
+          <Directory Id="dirServer" Name="MCP_Server" />
+          <Directory Id="dirAddin" Name="MCP_Addin" />
+        </Directory>
+      </Directory>
+    </StandardDirectory>
+
+    <!-- MCP Server: native arm64 apphost + portable managed payload (auto-harvested) -->
+    <Feature Id="MCPServer" Title="MCP Server" Level="1">
+      <Files Directory="dirServer" Include="$(var.PayloadDir)\MCP_Server\**" />
+    </Feature>
+
+    <!-- EA Add-in: AnyCPU .NET Framework assembly + COM/EA registration -->
+    <Feature Id="MCPAddin" Title="MCP Add-in for Enterprise Architect" Level="1">
+      <Files Directory="dirAddin" Include="$(var.PayloadDir)\MCP_Addin\**" />
+      <ComponentRef Id="AddinRegistration" />
+    </Feature>
+
+    <DirectoryRef Id="INSTALLDIR">
+      <Component Id="AddinRegistration" Guid="*" Bitness="always64">
+
+        <!-- EA add-in discovery keys. EA reads them by its OWN bitness/registry view:
+               * 64-bit EA (registry key EA64)  -> "EAAddins64" in the 64-bit view
+               * 32-bit EA (registry key EA400) -> "EAAddins"   in the 32-bit (Wow6432Node) view
+             We write both names in BOTH views so the add-in is found regardless of EA bitness. -->
+        <!-- 64-bit registry view -->
+        <RegistryValue Root="HKLM" Key="Software\Sparx Systems\EAAddins64\MCPAddin"
+                       Type="string" Value="$(var.ProgId)" KeyPath="yes" />
+        <RegistryValue Root="HKLM" Key="Software\Sparx Systems\EAAddins\MCPAddin"
+                       Type="string" Value="$(var.ProgId)" />
+        <!-- 32-bit registry view -->
+        <RegistryValue Root="HKLM" Key="Software\Wow6432Node\Sparx Systems\EAAddins\MCPAddin"
+                       Type="string" Value="$(var.ProgId)" />
+        <RegistryValue Root="HKLM" Key="Software\Wow6432Node\Sparx Systems\EAAddins64\MCPAddin"
+                       Type="string" Value="$(var.ProgId)" />
+
+        <!-- ============ managed COM server: 64-bit view (for x64 EA) ============ -->
+        <RegistryValue Root="HKLM" Key="Software\Classes\$(var.ProgId)"
+                       Type="string" Value="$(var.ProgId)" />
+        <RegistryValue Root="HKLM" Key="Software\Classes\$(var.ProgId)\CLSID"
+                       Type="string" Value="$(var.Clsid)" />
+        <RegistryValue Root="HKLM" Key="Software\Classes\CLSID\$(var.Clsid)"
+                       Type="string" Value="$(var.ProgId)" />
+        <RegistryValue Root="HKLM" Key="Software\Classes\CLSID\$(var.Clsid)\ProgID"
+                       Type="string" Value="$(var.ProgId)" />
+        <RegistryKey   Root="HKLM" Key="Software\Classes\CLSID\$(var.Clsid)\Implemented Categories\$(var.EaAddinCategory)"
+                       ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes" />
+        <RegistryValue Root="HKLM" Key="Software\Classes\CLSID\$(var.Clsid)\InprocServer32"
+                       Type="string" Value="mscoree.dll" />
+        <RegistryValue Root="HKLM" Key="Software\Classes\CLSID\$(var.Clsid)\InprocServer32"
+                       Name="ThreadingModel" Type="string" Value="Both" />
+        <RegistryValue Root="HKLM" Key="Software\Classes\CLSID\$(var.Clsid)\InprocServer32"
+                       Name="Class" Type="string" Value="$(var.ProgId)" />
+        <RegistryValue Root="HKLM" Key="Software\Classes\CLSID\$(var.Clsid)\InprocServer32"
+                       Name="Assembly" Type="string" Value="$(var.AddinAssembly)" />
+        <RegistryValue Root="HKLM" Key="Software\Classes\CLSID\$(var.Clsid)\InprocServer32"
+                       Name="CodeBase" Type="string" Value="file:///[INSTALLDIR]MCP_Addin\MCP_EA.dll" />
+        <RegistryValue Root="HKLM" Key="Software\Classes\CLSID\$(var.Clsid)\InprocServer32"
+                       Name="RuntimeVersion" Type="string" Value="v4.0.30319" />
+        <RegistryValue Root="HKLM" Key="Software\Classes\CLSID\$(var.Clsid)\InprocServer32\$(var.AddinAsmVersion)"
+                       Name="Class" Type="string" Value="$(var.ProgId)" />
+        <RegistryValue Root="HKLM" Key="Software\Classes\CLSID\$(var.Clsid)\InprocServer32\$(var.AddinAsmVersion)"
+                       Name="Assembly" Type="string" Value="$(var.AddinAssembly)" />
+        <RegistryValue Root="HKLM" Key="Software\Classes\CLSID\$(var.Clsid)\InprocServer32\$(var.AddinAsmVersion)"
+                       Name="CodeBase" Type="string" Value="file:///[INSTALLDIR]MCP_Addin\MCP_EA.dll" />
+        <RegistryValue Root="HKLM" Key="Software\Classes\CLSID\$(var.Clsid)\InprocServer32\$(var.AddinAsmVersion)"
+                       Name="RuntimeVersion" Type="string" Value="v4.0.30319" />
+
+        <!-- ============ managed COM server: 32-bit view (for x86 EA) ============ -->
+        <RegistryValue Root="HKLM" Key="Software\Classes\Wow6432Node\$(var.ProgId)"
+                       Type="string" Value="$(var.ProgId)" />
+        <RegistryValue Root="HKLM" Key="Software\Classes\Wow6432Node\$(var.ProgId)\CLSID"
+                       Type="string" Value="$(var.Clsid)" />
+        <RegistryValue Root="HKLM" Key="Software\Classes\Wow6432Node\CLSID\$(var.Clsid)"
+                       Type="string" Value="$(var.ProgId)" />
+        <RegistryValue Root="HKLM" Key="Software\Classes\Wow6432Node\CLSID\$(var.Clsid)\ProgID"
+                       Type="string" Value="$(var.ProgId)" />
+        <RegistryKey   Root="HKLM" Key="Software\Classes\Wow6432Node\CLSID\$(var.Clsid)\Implemented Categories\$(var.EaAddinCategory)"
+                       ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes" />
+        <RegistryValue Root="HKLM" Key="Software\Classes\Wow6432Node\CLSID\$(var.Clsid)\InprocServer32"
+                       Type="string" Value="mscoree.dll" />
+        <RegistryValue Root="HKLM" Key="Software\Classes\Wow6432Node\CLSID\$(var.Clsid)\InprocServer32"
+                       Name="ThreadingModel" Type="string" Value="Both" />
+        <RegistryValue Root="HKLM" Key="Software\Classes\Wow6432Node\CLSID\$(var.Clsid)\InprocServer32"
+                       Name="Class" Type="string" Value="$(var.ProgId)" />
+        <RegistryValue Root="HKLM" Key="Software\Classes\Wow6432Node\CLSID\$(var.Clsid)\InprocServer32"
+                       Name="Assembly" Type="string" Value="$(var.AddinAssembly)" />
+        <RegistryValue Root="HKLM" Key="Software\Classes\Wow6432Node\CLSID\$(var.Clsid)\InprocServer32"
+                       Name="CodeBase" Type="string" Value="file:///[INSTALLDIR]MCP_Addin\MCP_EA.dll" />
+        <RegistryValue Root="HKLM" Key="Software\Classes\Wow6432Node\CLSID\$(var.Clsid)\InprocServer32"
+                       Name="RuntimeVersion" Type="string" Value="v4.0.30319" />
+        <RegistryValue Root="HKLM" Key="Software\Classes\Wow6432Node\CLSID\$(var.Clsid)\InprocServer32\$(var.AddinAsmVersion)"
+                       Name="Class" Type="string" Value="$(var.ProgId)" />
+        <RegistryValue Root="HKLM" Key="Software\Classes\Wow6432Node\CLSID\$(var.Clsid)\InprocServer32\$(var.AddinAsmVersion)"
+                       Name="Assembly" Type="string" Value="$(var.AddinAssembly)" />
+        <RegistryValue Root="HKLM" Key="Software\Classes\Wow6432Node\CLSID\$(var.Clsid)\InprocServer32\$(var.AddinAsmVersion)"
+                       Name="CodeBase" Type="string" Value="file:///[INSTALLDIR]MCP_Addin\MCP_EA.dll" />
+        <RegistryValue Root="HKLM" Key="Software\Classes\Wow6432Node\CLSID\$(var.Clsid)\InprocServer32\$(var.AddinAsmVersion)"
+                       Name="RuntimeVersion" Type="string" Value="v4.0.30319" />
+      </Component>
+    </DirectoryRef>
+
+  </Package>
+</Wix>

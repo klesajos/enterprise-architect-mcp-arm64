@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Throwaway project used only to MINT a native arm64 .NET apphost named "MCP3.exe".
+    build.ps1 builds this with `-r win-arm64`, then keeps ONLY the produced MCP3.exe
+    (an apphost that launches MCP3.dll from its own folder) and discards everything
+    else. The real MCP3.dll and all managed assemblies come from your Sparx MSI.
+
+    A framework-dependent apphost has no hash binding to its managed dll, so this
+    minted launcher drives Sparx's unmodified MCP3.dll.
+  -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <AssemblyName>MCP3</AssemblyName>
+    <SelfContained>false</SelfContained>
+    <UseAppHost>true</UseAppHost>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <!-- RuntimeIdentifier is supplied on the command line (-r win-arm64) -->
+  </PropertyGroup>
+
+</Project>
