@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Enterprise Architect MCP — Tool Cheatsheet</title>
+<style>
+  @page { size: A4; margin: 14mm 12mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 10.2px; color: #1a1a1a; line-height: 1.4; margin: 0;
+  }
+  h1 { font-size: 21px; margin: 0 0 2px; color: #0b3d66; }
+  h1 .star { color: #c2410c; }
+  .sub { font-size: 10px; color: #444; margin: 0 0 10px; }
+  .sub code { background:#eef2f6; padding:1px 4px; border-radius:3px; }
+  h2 {
+    font-size: 13px; margin: 14px 0 5px; color: #0b3d66;
+    border-bottom: 2px solid #0b3d66; padding-bottom: 2px;
+  }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 4px; }
+  th, td { border: 1px solid #c9d4de; padding: 3px 6px; text-align: left; vertical-align: top; }
+  th { background: #0b3d66; color: #fff; font-weight: 600; font-size: 9.6px; }
+  tbody tr:nth-child(even) { background: #f3f7fa; }
+  td.tool { font-family: "Consolas","Courier New",monospace; font-size: 9.4px; white-space: nowrap; }
+  td.tool .star { color:#c2410c; font-weight:bold; }
+  td.in { font-family: "Consolas","Courier New",monospace; font-size: 9px; color:#334; }
+  code { font-family: "Consolas","Courier New",monospace; }
+  .note { background:#fff8e6; border:1px solid #f0d98a; border-radius:4px; padding:7px 10px; margin:6px 0; font-size:9.8px;}
+  .note b { color:#8a5a00; }
+  ul { margin: 4px 0 8px; padding-left: 18px; }
+  li { margin: 2px 0; }
+  ol { margin: 4px 0 8px; padding-left: 20px; }
+  .legend { font-size: 9.4px; color:#555; margin-bottom:8px; }
+  .legend .star { color:#c2410c; font-weight:bold; }
+  .foot { margin-top:12px; font-size:8.6px; color:#888; border-top:1px solid #ddd; padding-top:5px; }
+</style>
+</head>
+<body>
+
+<h1>Enterprise Architect MCP — Tool Cheatsheet</h1>
+<p class="sub">Server <code>enterprise-architect</code> (<code>MCP3.exe</code>), launched with <code>-enableEdit -setTimeout 60</code>.<br><b>Author: Josef Klesa</b> (klesajos)</p>
+<p class="legend"><span class="star">★</span> = editing tool (present only because of <code>-enableEdit</code>). Deletion is possible <b>for connectors/messages only</b> — back up via a baseline before edits. IDs are numeric and stable (<code>ElementID</code>, <code>DiagramID</code>, <code>ConnectorID</code>, <code>PackageID</code>, <code>AttributeID</code>, <code>OperationID</code>); most tools take them, so discovery (find/get) usually comes first.</p>
+
+<h2>📦 Packages</h2>
+<table>
+<thead><tr><th>Tool</th><th>What it does</th><th>Key inputs</th></tr></thead>
+<tbody>
+<tr><td class="tool">get_root_packages</td><td>Top-level package(s) of the model — your starting point.</td><td class="in">—</td></tr>
+<tr><td class="tool">get_current_package</td><td>Package currently selected in EA. If an element/diagram is selected, returns its containing package. Use before creating things.</td><td class="in">—</td></tr>
+<tr><td class="tool">get_packages_information</td><td>Full details of the given packages.</td><td class="in">packageIDs[]</td></tr>
+<tr><td class="tool">find_packages_by_name</td><td>Find packages by name across the model.</td><td class="in">name, exactMatch (def. true)</td></tr>
+<tr><td class="tool"><span class="star">★</span> create_or_update_package</td><td>Create a package (<code>packageID:0</code>) under a parent, or update one (<code>packageID:≠0</code>).</td><td class="in">packageInfo{name, owningPackageID, packageID, description}, taggedValues</td></tr>
+<tr><td class="tool"><span class="star">★</span> clone_package</td><td>Full copy of a package into the same parent.</td><td class="in">packageID</td></tr>
+<tr><td class="tool"><span class="star">★</span> create_baseline</td><td><b>Snapshot/backup</b> of a package. Returns a baseline ID. Do this before a risky edit.</td><td class="in">packageID</td></tr>
+<tr><td class="tool"><span class="star">★</span> apply_baseline</td><td><b>Revert</b> a package to a baseline. Auto-refreshes diagrams.</td><td class="in">packageID, baselineID</td></tr>
+</tbody>
+</table>
+
+<h2>🧩 Elements</h2>
+<table>
+<thead><tr><th>Tool</th><th>What it does</th><th>Key inputs</th></tr></thead>
+<tbody>
+<tr><td class="tool">get_current_elements</td><td>Elements currently selected in EA.</td><td class="in">—</td></tr>
+<tr><td class="tool">get_elements_information</td><td>Full detail: operations, attributes, child elements and diagrams.</td><td class="in">elementIDs[]</td></tr>
+<tr><td class="tool">find_elements_by_name</td><td>Find elements by name across the model.</td><td class="in">name, exactMatch (def. true)</td></tr>
+<tr><td class="tool">find_element_in_diagrams</td><td>List all diagrams an element appears on.</td><td class="in">elementID</td></tr>
+<tr><td class="tool">select_element_in_browser</td><td>Highlight an element in EA's Browser window.</td><td class="in">elementID</td></tr>
+<tr><td class="tool">select_element_in_diagram</td><td>Select an element in a diagram (opens it if needed).</td><td class="in">elementID, diagramID</td></tr>
+<tr><td class="tool">export_element_linked_documents</td><td>Export elements' linked documents to RTF (<code>&lt;elementID&gt;.rtf</code>).</td><td class="in">elementIDs[], pathToExport</td></tr>
+<tr><td class="tool"><span class="star">★</span> create_or_update_elements</td><td>Create (<code>elementID:0</code>) or update (<code>elementID:≠0</code>) elements. Supports stereotypes, tagged values and color/border/text formatting (per-diagram or whole model).</td><td class="in">elementInfo[]{name, type, owningPackageID, owningElementID, elementID, stereotypes, taggedValues, elementFormat}</td></tr>
+<tr><td class="tool"><span class="star">★</span> create_or_update_operations</td><td>Add/update operations (methods) on an element incl. parameters, scope, return type, order.</td><td class="in">elementID, operationInfo[]</td></tr>
+<tr><td class="tool"><span class="star">★</span> create_or_update_attributes</td><td>Add/update attributes on an element (type, scope, order, stereotype).</td><td class="in">elementID, attributeInfo[]</td></tr>
+<tr><td class="tool"><span class="star">★</span> clone_elements</td><td>Full copy of elements into the same parent package.</td><td class="in">elementID[]</td></tr>
+<tr><td class="tool"><span class="star">★</span> import_element_linked_documents</td><td>Import RTF linked documents onto elements (file must be <code>&lt;elementID&gt;.rtf</code>).</td><td class="in">elementID[], pathToImport</td></tr>
+</tbody>
+</table>
+
+<h2>🔗 Connectors &amp; Messages</h2>
+<table>
+<thead><tr><th>Tool</th><th>What it does</th><th>Key inputs</th></tr></thead>
+<tbody>
+<tr><td class="tool">get_current_connector</td><td>Connector selected in the current diagram.</td><td class="in">—</td></tr>
+<tr><td class="tool">get_connectors_information</td><td>Full detail incl. tagged values.</td><td class="in">connectorIDs[]</td></tr>
+<tr><td class="tool"><span class="star">★</span> create_or_update_connectors</td><td>Create (<code>connectorID:0</code>) or update relationships between elements. Set <code>sourceEnd</code>/<code>targetEnd</code> (relatedElementID, multiplicity, scope, name), style, color/width, stereotypes, tagged values. Reload the diagram afterwards.</td><td class="in">connectorInfo[]{type, sourceEnd, targetEnd}</td></tr>
+<tr><td class="tool"><span class="star">★</span> create_or_update_messages</td><td>Create/update messages between lifelines on a <b>Sequence diagram</b>. Supports async/return, operation-typed messages, ordering.</td><td class="in">diagramID, messageInfo[]{sourceElementID, targetElementID, order}</td></tr>
+<tr><td class="tool"><span class="star">★</span> delete_connectors_or_messages</td><td><b>The only delete tool.</b> Removes connectors/messages. Reload the diagram afterwards.</td><td class="in">connectorIDs[]</td></tr>
+</tbody>
+</table>
+
+<h2>📐 Diagrams</h2>
+<table>
+<thead><tr><th>Tool</th><th>What it does</th><th>Key inputs</th></tr></thead>
+<tbody>
+<tr><td class="tool">get_current_diagram</td><td>The active diagram in EA.</td><td class="in">—</td></tr>
+<tr><td class="tool">get_opened_diagrams</td><td>All currently open diagrams.</td><td class="in">—</td></tr>
+<tr><td class="tool">get_diagrams_information</td><td>Detail incl. shown elements and connectors. <b>Use this to analyze a diagram</b>, not the image.</td><td class="in">diagramIDs[]</td></tr>
+<tr><td class="tool">get_diagram_image</td><td>PNG render of a diagram (visual only, not for analysis).</td><td class="in">diagramID</td></tr>
+<tr><td class="tool">open_diagrams</td><td>Open diagrams in EA.</td><td class="in">diagramIDs[]</td></tr>
+<tr><td class="tool">reload_diagrams</td><td>Refresh diagrams so new elements/connectors show.</td><td class="in">diagramIDs[]</td></tr>
+<tr><td class="tool"><span class="star">★</span> create_or_update_diagram</td><td>Create (<code>diagramID:0</code>) or update a diagram, owned by a package or an element. Type can't change after creation.</td><td class="in">diagramInfo{name, type, owningPackageID, owningElementID, diagramID}</td></tr>
+<tr><td class="tool"><span class="star">★</span> place_elements_on_diagram</td><td>Place existing elements on a diagram at x/y with width/height. Auto-reloads — no manual reload needed.</td><td class="in">diagramID, placements[]{elementID, x, y, width, height, style}</td></tr>
+<tr><td class="tool"><span class="star">★</span> layout_connectors</td><td>Auto-layout the connectors in a diagram.</td><td class="in">diagramID</td></tr>
+<tr><td class="tool"><span class="star">★</span> change_connector_visibility</td><td>Show/hide specific connectors on a diagram.</td><td class="in">diagramID, connectorIDs[], showHide</td></tr>
+</tbody>
+</table>
+
+<h2>Conventions &amp; gotchas</h2>
+<ul>
+<li><b>Create vs. update</b> is signaled by the ID field: <code>0</code> = create new, non-zero = update existing. Applies to elements, diagrams, packages, connectors, operations, attributes and messages.</li>
+<li><b><code>type</code> is immutable</b> after creation for elements, connectors and diagrams.</li>
+<li><b>Stereotyped/profile types</b> use the fully-qualified name, e.g. <code>Archimate3::ArchiMate_ApplicationComponent</code>, <code>Archimate3::Application</code> (diagram), <code>Archimate3::ArchiMate_Serving</code> (connector).</li>
+<li><b>Ownership:</b> an element/diagram belongs to a package (<code>owningPackageID</code>) OR a parent element (<code>owningElementID</code>, set the other to 0).</li>
+<li><b>Reload after relationship edits:</b> connectors/messages need <code>reload_diagrams</code>; element placement auto-reloads.</li>
+<li><b>Colors:</b> RGB 0–255 per channel; <code>red:-1</code> = use default color. <code>borderWidth</code>/connector width: -1..3, -1 = default.</li>
+<li><b>Scope</b> values: <code>Private</code>, <code>Protected</code>, <code>Package</code>, <code>Public</code>.</li>
+<li><b>Linked documents</b> are RTF; the filename must be <code>&lt;elementID&gt;.rtf</code>.</li>
+<li><b>Timeout</b> is 60 s (<code>-setTimeout 60</code>); raise toward 600 for heavy operations (EA runs under x64 emulation here).</li>
+<li><b>Timeout / "Failed to connect"</b> almost always means <b>no project is open in EA</b> — open the repository first, then retry.</li>
+</ul>
+
+<h2>Safe edit workflow</h2>
+<ol>
+<li><code>get_current_package</code> / <code>find_packages_by_name</code> → target <code>packageID</code>.</li>
+<li><span class="star">★</span> <code>create_baseline(packageID)</code> → keep the returned baseline ID.</li>
+<li>Make edits (create/update elements, connectors, diagrams…).</li>
+<li><code>reload_diagrams</code> to verify visually.</li>
+<li>If something is wrong → <span class="star">★</span> <code>apply_baseline(packageID, baselineID)</code> to roll back.</li>
+</ol>
+
+<div class="note"><b>Beware deletion:</b> the MCP has no tool to delete packages or elements — the only delete is <code>delete_connectors_or_messages</code>. Delete test/unwanted packages and elements manually in EA (right-click → Delete). Name throwaways e.g. <code>ZZ_*</code> so they are easy to find.</div>
+
+<div class="foot">Author: Josef Klesa (klesajos) · © 2026, MIT · server MCP3 2.7.1 · 35 tools (★ = editing).</div>
+
+</body>
+</html>

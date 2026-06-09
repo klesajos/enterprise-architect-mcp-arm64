@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<title>Enterprise Architect MCP — Tahák nástrojů</title>
+<style>
+  @page { size: A4; margin: 14mm 12mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 10.2px; color: #1a1a1a; line-height: 1.4; margin: 0;
+  }
+  h1 { font-size: 21px; margin: 0 0 2px; color: #0b3d66; }
+  h1 .star { color: #c2410c; }
+  .sub { font-size: 10px; color: #444; margin: 0 0 10px; }
+  .sub code { background:#eef2f6; padding:1px 4px; border-radius:3px; }
+  h2 {
+    font-size: 13px; margin: 14px 0 5px; color: #0b3d66;
+    border-bottom: 2px solid #0b3d66; padding-bottom: 2px;
+  }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 4px; }
+  th, td { border: 1px solid #c9d4de; padding: 3px 6px; text-align: left; vertical-align: top; }
+  th { background: #0b3d66; color: #fff; font-weight: 600; font-size: 9.6px; }
+  tbody tr:nth-child(even) { background: #f3f7fa; }
+  td.tool { font-family: "Consolas","Courier New",monospace; font-size: 9.4px; white-space: nowrap; }
+  td.tool .star { color:#c2410c; font-weight:bold; }
+  td.in { font-family: "Consolas","Courier New",monospace; font-size: 9px; color:#334; }
+  code { font-family: "Consolas","Courier New",monospace; }
+  .note { background:#fff8e6; border:1px solid #f0d98a; border-radius:4px; padding:7px 10px; margin:6px 0; font-size:9.8px;}
+  .note b { color:#8a5a00; }
+  ul { margin: 4px 0 8px; padding-left: 18px; }
+  li { margin: 2px 0; }
+  ol { margin: 4px 0 8px; padding-left: 20px; }
+  .legend { font-size: 9.4px; color:#555; margin-bottom:8px; }
+  .legend .star { color:#c2410c; font-weight:bold; }
+  .foot { margin-top:12px; font-size:8.6px; color:#888; border-top:1px solid #ddd; padding-top:5px; }
+</style>
+</head>
+<body>
+
+<h1>Enterprise Architect MCP — Tahák nástrojů</h1>
+<p class="sub">Server <code>enterprise-architect</code> (<code>MCP3.exe</code>), spuštěn s <code>-enableEdit -setTimeout 60</code>.<br><b>Autor: Josef Klesa</b> (klesajos)</p>
+<p class="legend"><span class="star">★</span> = editační nástroj (k dispozici jen díky <code>-enableEdit</code>). Mazání je možné <b>pouze u konektorů/zpráv</b> — před úpravami zálohuj přes baseline. ID jsou číselná a stabilní (<code>ElementID</code>, <code>DiagramID</code>, <code>ConnectorID</code>, <code>PackageID</code>, <code>AttributeID</code>, <code>OperationID</code>); většina nástrojů je vyžaduje, takže se obvykle nejdřív hledá/čte.</p>
+
+<h2>📦 Balíčky (Packages)</h2>
+<table>
+<thead><tr><th>Nástroj</th><th>Co dělá</th><th>Klíčové vstupy</th></tr></thead>
+<tbody>
+<tr><td class="tool">get_root_packages</td><td>Kořenový balíček (balíčky) modelu — výchozí bod.</td><td class="in">—</td></tr>
+<tr><td class="tool">get_current_package</td><td>Aktuálně vybraný balíček v EA. Je-li vybrán element/diagram, vrátí jeho nadřazený balíček. Použij před vytvářením.</td><td class="in">—</td></tr>
+<tr><td class="tool">get_packages_information</td><td>Detaily zadaných balíčků.</td><td class="in">packageIDs[]</td></tr>
+<tr><td class="tool">find_packages_by_name</td><td>Najde balíčky podle názvu v celém modelu.</td><td class="in">name, exactMatch (def. true)</td></tr>
+<tr><td class="tool"><span class="star">★</span> create_or_update_package</td><td>Vytvoří balíček (<code>packageID:0</code>) pod rodičem, nebo upraví existující (<code>packageID:≠0</code>).</td><td class="in">packageInfo{name, owningPackageID, packageID, description}, taggedValues</td></tr>
+<tr><td class="tool"><span class="star">★</span> clone_package</td><td>Úplná kopie balíčku do téhož rodiče.</td><td class="in">packageID</td></tr>
+<tr><td class="tool"><span class="star">★</span> create_baseline</td><td><b>Snímek/záloha</b> balíčku. Vrací baseline ID. Udělej před riskantní úpravou.</td><td class="in">packageID</td></tr>
+<tr><td class="tool"><span class="star">★</span> apply_baseline</td><td><b>Vrácení</b> balíčku do baseline. Diagramy se obnoví automaticky.</td><td class="in">packageID, baselineID</td></tr>
+</tbody>
+</table>
+
+<h2>🧩 Elementy (Elements)</h2>
+<table>
+<thead><tr><th>Nástroj</th><th>Co dělá</th><th>Klíčové vstupy</th></tr></thead>
+<tbody>
+<tr><td class="tool">get_current_elements</td><td>Aktuálně vybrané elementy v EA.</td><td class="in">—</td></tr>
+<tr><td class="tool">get_elements_information</td><td>Plný detail: operace, atributy, podřízené elementy a diagramy.</td><td class="in">elementIDs[]</td></tr>
+<tr><td class="tool">find_elements_by_name</td><td>Najde elementy podle názvu v celém modelu.</td><td class="in">name, exactMatch (def. true)</td></tr>
+<tr><td class="tool">find_element_in_diagrams</td><td>Vypíše všechny diagramy, kde se element vyskytuje.</td><td class="in">elementID</td></tr>
+<tr><td class="tool">select_element_in_browser</td><td>Zvýrazní element v okně Browser v EA.</td><td class="in">elementID</td></tr>
+<tr><td class="tool">select_element_in_diagram</td><td>Vybere element v diagramu (otevře ho, je-li třeba).</td><td class="in">elementID, diagramID</td></tr>
+<tr><td class="tool">export_element_linked_documents</td><td>Exportuje navázané dokumenty elementů do RTF (<code>&lt;elementID&gt;.rtf</code>).</td><td class="in">elementIDs[], pathToExport</td></tr>
+<tr><td class="tool"><span class="star">★</span> create_or_update_elements</td><td>Vytvoří (<code>elementID:0</code>) nebo upraví (<code>elementID:≠0</code>) elementy. Podporuje stereotypy, tagged values a formátování barev/okraje/textu (per-diagram nebo celý model).</td><td class="in">elementInfo[]{name, type, owningPackageID, owningElementID, elementID, stereotypes, taggedValues, elementFormat}</td></tr>
+<tr><td class="tool"><span class="star">★</span> create_or_update_operations</td><td>Přidá/upraví operace (metody) elementu vč. parametrů, scope, návratového typu, pořadí.</td><td class="in">elementID, operationInfo[]</td></tr>
+<tr><td class="tool"><span class="star">★</span> create_or_update_attributes</td><td>Přidá/upraví atributy elementu (typ, scope, pořadí, stereotyp).</td><td class="in">elementID, attributeInfo[]</td></tr>
+<tr><td class="tool"><span class="star">★</span> clone_elements</td><td>Úplná kopie elementů do téhož rodičovského balíčku.</td><td class="in">elementID[]</td></tr>
+<tr><td class="tool"><span class="star">★</span> import_element_linked_documents</td><td>Importuje RTF navázané dokumenty na elementy (soubor musí být <code>&lt;elementID&gt;.rtf</code>).</td><td class="in">elementID[], pathToImport</td></tr>
+</tbody>
+</table>
+
+<h2>🔗 Konektory a zprávy (Connectors &amp; Messages)</h2>
+<table>
+<thead><tr><th>Nástroj</th><th>Co dělá</th><th>Klíčové vstupy</th></tr></thead>
+<tbody>
+<tr><td class="tool">get_current_connector</td><td>Konektor vybraný v aktuálním diagramu.</td><td class="in">—</td></tr>
+<tr><td class="tool">get_connectors_information</td><td>Plný detail vč. tagged values.</td><td class="in">connectorIDs[]</td></tr>
+<tr><td class="tool"><span class="star">★</span> create_or_update_connectors</td><td>Vytvoří (<code>connectorID:0</code>) nebo upraví vztahy mezi elementy. Nastav <code>sourceEnd</code>/<code>targetEnd</code> (relatedElementID, multiplicity, scope, name), styl, barvu/šířku, stereotypy, tagged values. Pak diagram obnov.</td><td class="in">connectorInfo[]{type, sourceEnd, targetEnd}</td></tr>
+<tr><td class="tool"><span class="star">★</span> create_or_update_messages</td><td>Vytvoří/upraví zprávy mezi lifelinami v <b>sekvenčním diagramu</b>. Podporuje async/return, zprávy typované operací, pořadí.</td><td class="in">diagramID, messageInfo[]{sourceElementID, targetElementID, order}</td></tr>
+<tr><td class="tool"><span class="star">★</span> delete_connectors_or_messages</td><td><b>Jediný mazací nástroj.</b> Odstraní konektory/zprávy. Poté diagram obnov.</td><td class="in">connectorIDs[]</td></tr>
+</tbody>
+</table>
+
+<h2>📐 Diagramy (Diagrams)</h2>
+<table>
+<thead><tr><th>Nástroj</th><th>Co dělá</th><th>Klíčové vstupy</th></tr></thead>
+<tbody>
+<tr><td class="tool">get_current_diagram</td><td>Aktivní diagram v EA.</td><td class="in">—</td></tr>
+<tr><td class="tool">get_opened_diagrams</td><td>Všechny aktuálně otevřené diagramy.</td><td class="in">—</td></tr>
+<tr><td class="tool">get_diagrams_information</td><td>Detail vč. zobrazených elementů a konektorů. <b>Pro analýzu diagramu</b> použij tohle, ne obrázek.</td><td class="in">diagramIDs[]</td></tr>
+<tr><td class="tool">get_diagram_image</td><td>PNG render diagramu (jen vizuál, ne pro analýzu).</td><td class="in">diagramID</td></tr>
+<tr><td class="tool">open_diagrams</td><td>Otevře diagramy v EA.</td><td class="in">diagramIDs[]</td></tr>
+<tr><td class="tool">reload_diagrams</td><td>Obnoví diagramy, aby se zobrazily nové elementy/konektory.</td><td class="in">diagramIDs[]</td></tr>
+<tr><td class="tool"><span class="star">★</span> create_or_update_diagram</td><td>Vytvoří (<code>diagramID:0</code>) nebo upraví diagram, vlastněný balíčkem nebo elementem. Typ nelze po vytvoření změnit.</td><td class="in">diagramInfo{name, type, owningPackageID, owningElementID, diagramID}</td></tr>
+<tr><td class="tool"><span class="star">★</span> place_elements_on_diagram</td><td>Umístí existující elementy na diagram na x/y se šířkou/výškou. Auto-obnova — ruční reload není třeba.</td><td class="in">diagramID, placements[]{elementID, x, y, width, height, style}</td></tr>
+<tr><td class="tool"><span class="star">★</span> layout_connectors</td><td>Automatické rozmístění konektorů v diagramu.</td><td class="in">diagramID</td></tr>
+<tr><td class="tool"><span class="star">★</span> change_connector_visibility</td><td>Zobrazí/skryje konkrétní konektory na diagramu.</td><td class="in">diagramID, connectorIDs[], showHide</td></tr>
+</tbody>
+</table>
+
+<h2>Konvence a záludnosti</h2>
+<ul>
+<li><b>Vytvoření vs. úprava</b> se řídí ID polem: <code>0</code> = nový, nenulové = úprava existujícího. Platí pro elementy, diagramy, balíčky, konektory, operace, atributy i zprávy.</li>
+<li><b><code>type</code> je neměnný</b> po vytvoření u elementů, konektorů i diagramů.</li>
+<li><b>Stereotypové/profilové typy</b> používají plně kvalifikovaný název, např. <code>Archimate3::ArchiMate_ApplicationComponent</code>, <code>Archimate3::Application</code> (diagram), <code>Archimate3::ArchiMate_Serving</code> (konektor).</li>
+<li><b>Vlastnictví:</b> element/diagram patří buď balíčku (<code>owningPackageID</code>), NEBO rodičovskému elementu (<code>owningElementID</code>, druhé nastav na 0).</li>
+<li><b>Obnova po úpravě vztahů:</b> konektory/zprávy vyžadují <code>reload_diagrams</code>; umístění elementů se obnoví samo.</li>
+<li><b>Barvy:</b> RGB 0–255 na kanál; <code>red:-1</code> = výchozí barva. <code>borderWidth</code>/šířka konektoru: -1..3, -1 = výchozí.</li>
+<li><b>Scope</b> hodnoty: <code>Private</code>, <code>Protected</code>, <code>Package</code>, <code>Public</code>.</li>
+<li><b>Navázané dokumenty</b> jsou RTF, název souboru musí být <code>&lt;elementID&gt;.rtf</code>.</li>
+<li><b>Timeout</b> je 60 s (<code>-setTimeout 60</code>); zvyš až k 600 při náročných operacích (EA tu běží pod x64 emulací).</li>
+<li><b>Timeout / „Failed to connect"</b> téměř vždy znamená <b>zavřený projekt v EA</b> — nejdřív otevři repozitář, pak opakuj.</li>
+</ul>
+
+<h2>Bezpečný postup úprav</h2>
+<ol>
+<li><code>get_current_package</code> / <code>find_packages_by_name</code> → cílové <code>packageID</code>.</li>
+<li><span class="star">★</span> <code>create_baseline(packageID)</code> → ulož vrácené baseline ID.</li>
+<li>Proveď úpravy (vytvoř/uprav elementy, konektory, diagramy…).</li>
+<li><code>reload_diagrams</code> pro vizuální kontrolu.</li>
+<li>Když je něco špatně → <span class="star">★</span> <code>apply_baseline(packageID, baselineID)</code> pro návrat.</li>
+</ol>
+
+<div class="note"><b>Pozor na mazání:</b> MCP nemá nástroj na smazání balíčků ani elementů — jediné mazání je <code>delete_connectors_or_messages</code>. Testovací/nechtěné balíčky a elementy maž ručně v EA (pravý klik → Delete). Pojmenovávej dočasné věci např. <code>ZZ_*</code>, ať se snadno najdou.</div>
+
+<div class="foot">Autor: Josef Klesa (klesajos) · © 2026, MIT · server MCP3 2.7.1 · 35 nástrojů (z toho ★ editačních).</div>
+
+</body>
+</html>
