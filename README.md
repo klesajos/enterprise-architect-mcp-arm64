@@ -139,7 +139,8 @@ cd enterprise-architect-mcp-arm64
 > (or `Set-ExecutionPolicy -Scope Process Bypass` once per session).
 
 Output: `dist\MCP_EA_arm64.msi`. The script auto-detects the product version, add-in ProgID, CLSID
-and assembly identity from *your* MSI, so it should keep working for future Sparx releases.
+and assembly identity from *your* MSI, so it should keep working for future Sparx releases — see
+[Updating (new Sparx release)](#updating-new-sparx-release).
 
 ## Install
 
@@ -156,6 +157,26 @@ Then:
 > **EA must be running** with the add-in loaded whenever you use the tools: the server connects to
 > the add-in *inside* EA over a named pipe. The MCP client **spawns the server for you** — you never
 > launch `MCP3.exe` manually.
+
+## Updating (new Sparx release)
+
+Download the new official MSI, rebuild, and install over the top — **no uninstall needed**:
+
+```powershell
+.\build.ps1 -SourceMsi "$HOME\Downloads\MCP_EA_x64.msi"   # the NEW official MSI
+msiexec /i dist\MCP_EA_arm64.msi
+```
+
+The MSI declares a major upgrade with a stable `UpgradeCode` (and `AllowSameVersionUpgrades`), so the
+new build automatically replaces the previous install — even when the version number is unchanged.
+Downgrades are blocked. Your MCP client config keeps working (the `MCP3.exe` path doesn't change).
+
+## Uninstall
+
+*Settings ▸ Apps ▸ Installed apps* ▸ **MCP Server for Enterprise Architect (Arm64)** ▸ Uninstall, or
+`msiexec /x dist\MCP_EA_arm64.msi`. Note the `msiexec /x <file>` form only works with the **exact MSI
+file that was installed** — every rebuild gets a fresh ProductCode — so after a rebuild prefer
+*Settings ▸ Apps*.
 
 ## Run only ONE Enterprise Architect instance
 
