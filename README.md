@@ -27,6 +27,10 @@ Architect* from the official x86/x64 release.
 ```powershell
 # 1) Download the official Sparx installer (x64) — https://www.sparxsystems.jp/en/MCP/
 #    e.g. to $HOME\Downloads\MCP_EA_x64.msi   (this repo ships no Sparx binaries)
+#    Verify it's genuine — Sparx publishes no checksums, so the Authenticode signature is
+#    the only integrity check (build.ps1 enforces this too; expect Status "Valid" and
+#    signer "Sparx Systems Japan Co., Ltd."):
+Get-AuthenticodeSignature "$HOME\Downloads\MCP_EA_x64.msi" | Format-List Status, SignerCertificate
 
 # 2) Build the native ARM64 MSI
 git clone https://github.com/klesajos/enterprise-architect-mcp-arm64.git
@@ -113,6 +117,12 @@ add-in shows up whether you run 32-bit EA (`EA400`) or 64-bit EA (`EA64`) under 
   - Direct downloads: **x64** (recommended) <https://www.sparxsystems.jp/en/MCP/bin/MCP_EA_x64.msi>
     · **x86** <https://www.sparxsystems.jp/en/MCP/bin/MCP_EA_x86.msi>
   - Either works as the source — the managed payload is identical; `build.ps1` only swaps the apphost.
+  - **Verify the download.** Sparx publishes no checksums, so the MSI's Authenticode signature is the
+    only way to confirm an unaltered installer: `Get-AuthenticodeSignature <msi> | Format-List Status,
+    SignerCertificate` must show Status `Valid` with signer `Sparx Systems Japan Co., Ltd.`
+    (or Explorer ▸ Properties ▸ Digital Signatures). `build.ps1` checks this automatically and
+    refuses unsigned/foreign MSIs — `-SkipSignatureCheck` overrides if Sparx ever rotates its
+    certificate before the tooling catches up.
 - WiX is **not** a manual prerequisite — it's pinned as a local `dotnet` tool
   (`.config/dotnet-tools.json`) and restored automatically by the build.
 
