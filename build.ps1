@@ -344,4 +344,5 @@ Write-Host ("Size   : {0:N0} bytes" -f (Get-Item $outMsi).Length)
 Write-Host ("Template (platform;lang) : {0}" -f $template)
 if ($rtVer) { Write-Host ("Runtime needed on target : .NET {0} (arm64)" -f $rtVer) }
 if ($template -notmatch 'Arm64') { Write-Warning "Expected an Arm64 Template - double-check the build." }
+Write-Host "Note   : this MSI contains Sparx's proprietary binaries - for your own use; do not redistribute."
 Write-Host "`nInstall with:  msiexec /i `"$outMsi`""

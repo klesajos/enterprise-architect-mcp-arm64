@@ -13,6 +13,12 @@ under their own license terms. This repository contains NONE of Sparx's
 binaries - they are downloaded by the user and harvested at build time from a
 copy of the official installer that the user supplies.
 
+Consequently, any MSI you build with this tooling (dist\MCP_EA_arm64.msi) DOES
+contain Sparx Systems' proprietary binaries, harvested from your copy of the
+official installer. The MIT License does not extend to that build output. It is
+intended for your own use only - do not redistribute it unless Sparx Systems'
+license terms permit you to.
+
 This is an independent, unofficial project for interoperability on Windows ARM64.
 It is not affiliated with or endorsed by Sparx Systems.
 

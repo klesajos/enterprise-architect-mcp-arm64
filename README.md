@@ -305,6 +305,9 @@ docs/                         # architecture diagram (+ .excalidraw source) and 
 
 - The produced MSI is **unsigned** — it cannot carry Sparx's original signature. Windows SmartScreen
   may warn on first run. Build it yourself / use at your own discretion.
+- The MSI you build **contains Sparx's proprietary binaries**, harvested from your copy of the
+  official installer. It is for **your own use** — do **not** redistribute it unless Sparx's license
+  terms permit it. The MIT license covers this repo's tooling only, never the build output.
 - It shares its **UpgradeCode** with the official installer, so installing it **replaces** any existing
   official x86/x64 install of the same product (and vice-versa) — the two cannot coexist. Uninstall
   with `msiexec /x dist\MCP_EA_arm64.msi` or via *Settings ▸ Apps*.
@@ -316,5 +319,6 @@ docs/                         # architecture diagram (+ .excalidraw source) and 
 ## License
 
 Build tooling in this repo: **MIT** (see [LICENSE](LICENSE)). The MIT license covers *only* this
-tooling — **not** the Sparx product, which it neither contains nor relicenses. See [NOTICE](NOTICE)
-for the exact scope and attribution.
+tooling — **not** the Sparx product, which it neither contains nor relicenses, and therefore **not
+the MSI you build**, which does contain Sparx's binaries. See [NOTICE](NOTICE) for the exact scope
+and attribution.
