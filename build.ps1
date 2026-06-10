@@ -185,8 +185,10 @@ Write-Step 'Detecting product/COM details from the source MSI'
 $fallbacks = @()
 $ver = '2.7.1'
 try {
-    # Property table: F1=Property, F2=Value
-    $row = @(Get-MsiRows $SourceMsi "SELECT `Property`,`Value` FROM Property") | Where-Object { $_.F1 -eq 'ProductVersion' } | Select-Object -First 1
+    # Property table: F1=Property, F2=Value. Single-quoted on purpose: in a double-quoted
+    # string PowerShell eats the backquotes (its escape character) before Windows Installer
+    # ever sees them, so the MSI SQL identifier quoting would silently disappear.
+    $row = @(Get-MsiRows $SourceMsi 'SELECT `Property`,`Value` FROM Property') | Where-Object { $_.F1 -eq 'ProductVersion' } | Select-Object -First 1
     if ($row) { $ver = $row.F2 } else { $fallbacks += 'ProductVersion' }
 } catch { Write-Warning "Property table query failed: $($_.Exception.Message)"; $fallbacks += 'ProductVersion' }
 
