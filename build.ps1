@@ -22,6 +22,11 @@
 .PARAMETER KeepWork
     Keep the intermediate .\build working folder (for inspection/debugging).
 
+.PARAMETER SkipSignatureCheck
+    Skip the Authenticode check of the source MSI. Sparx publishes no checksums, so the
+    official MSI's signature is the only integrity link in the chain - only skip this if
+    Sparx has changed its code-signing certificate and the check rejects a genuine MSI.
+
 .EXAMPLE
     .\build.ps1 -SourceMsi "$HOME\Downloads\MCP_EA_x64.msi"
 #>
@@ -32,7 +37,9 @@ param(
 
     [string]$OutDir,
 
-    [switch]$KeepWork
+    [switch]$KeepWork,
+
+    [switch]$SkipSignatureCheck
 )
 
 $ErrorActionPreference = 'Stop'
@@ -78,6 +85,21 @@ Write-Step 'Checking prerequisites'
 if (-not (Test-Path $SourceMsi)) { throw "Source MSI not found: $SourceMsi" }
 $SourceMsi = (Resolve-Path $SourceMsi).ProviderPath  # raw filesystem path (handles UNC, no provider prefix)
 Write-Host "Source MSI : $SourceMsi"
+
+# Sparx publishes no checksums, so the official MSI's Authenticode signature is the ONLY
+# integrity link from Sparx to the (unsigned) MSI this script produces - verify it before
+# msiexec parses the file. Match the signer on 'Sparx Systems' (not the full subject or a
+# thumbprint) so a routine certificate renewal doesn't break the check.
+if (-not $SkipSignatureCheck) {
+    $sig = Get-AuthenticodeSignature -FilePath $SourceMsi
+    if ($sig.Status -ne 'Valid' -or $sig.SignerCertificate.Subject -notmatch 'Sparx Systems') {
+        $subject = if ($sig.SignerCertificate) { $sig.SignerCertificate.Subject } else { '(unsigned)' }
+        throw "Source MSI failed Authenticode verification (status: $($sig.Status); signer: $subject). Download the official MSI from https://www.sparxsystems.jp/en/MCP/ - or, if Sparx has changed its code-signing certificate, re-run with -SkipSignatureCheck."
+    }
+    Write-Host "Signature  : $($sig.Status) ($($sig.SignerCertificate.Subject))"
+} else {
+    Write-Warning 'Source MSI signature check SKIPPED (-SkipSignatureCheck): the input is unverified and the unsigned output MSI will inherit whatever it contains.'
+}
 
 if (-not (Get-Command dotnet -ErrorAction SilentlyContinue)) {
     throw "The .NET SDK (9.0+) is required but 'dotnet' was not found on PATH. Install from https://dotnet.microsoft.com/download/dotnet/9.0"
