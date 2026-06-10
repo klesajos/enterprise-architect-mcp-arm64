@@ -262,6 +262,27 @@ Get-ChildItem $payload -Recurse -Include *.dll, *.exe -File | ForEach-Object {
 if ((Get-PEMachine (Join-Path $payload 'MCP_Server\MCP3.exe')) -ne 'ARM64') { throw 'Payload MCP3.exe is not ARM64' }
 Write-Host "payload PE check : $peCount binaries OK (portable IL or arm64-native)"
 
+# The harvested runtimeconfig.json is the authoritative statement of which .NET runtime
+# the product needs. The minted apphost is forward-compatible (hostfxr resolves the
+# framework from this file), so a Sparx move off .NET 9 would build and run fine while
+# the README/badge/SDK guidance silently went stale - surface it instead.
+$rtVer = $null
+$rtCfgPath = Join-Path $payload 'MCP_Server\MCP3.runtimeconfig.json'
+if (Test-Path $rtCfgPath) {
+    try {
+        $fw = (Get-Content $rtCfgPath -Raw | ConvertFrom-Json).runtimeOptions.framework
+        if ($fw) { $rtVer = $fw.version }
+    } catch {}
+}
+if ($rtVer) {
+    Write-Host "Target runtime : .NET $rtVer (the install machine needs the matching arm64 runtime)"
+    if ($rtVer -notmatch '^9\.') {
+        Write-Warning "Sparx now targets .NET $rtVer (no longer 9.x). Update README.md (badge + Prerequisites), apphost/MCP3.csproj <TargetFramework>, and the SDK guidance in build.ps1."
+    }
+} else {
+    Write-Warning 'Could not read MCP_Server\MCP3.runtimeconfig.json from the payload - unable to confirm which .NET runtime the target machine needs.'
+}
+
 # ---------------------------------------------------------------- build MSI
 Write-Step 'Building the ARM64 MSI with WiX'
 $wxs    = Join-Path $repo 'src\MCP_EA_arm64.wxs'
@@ -294,5 +315,6 @@ Write-Step 'Done'
 Write-Host ("Output : {0}" -f $outMsi) -ForegroundColor Green
 Write-Host ("Size   : {0:N0} bytes" -f (Get-Item $outMsi).Length)
 Write-Host ("Template (platform;lang) : {0}" -f $template)
+if ($rtVer) { Write-Host ("Runtime needed on target : .NET {0} (arm64)" -f $rtVer) }
 if ($template -notmatch 'Arm64') { Write-Warning "Expected an Arm64 Template - double-check the build." }
 Write-Host "`nInstall with:  msiexec /i `"$outMsi`""
