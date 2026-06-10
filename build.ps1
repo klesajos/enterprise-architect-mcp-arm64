@@ -133,7 +133,15 @@ if (-not $SkipSignatureCheck) {
 if (-not (Get-Command dotnet -ErrorAction SilentlyContinue)) {
     throw "The .NET SDK (9.0+) is required but 'dotnet' was not found on PATH. Install from https://dotnet.microsoft.com/download/dotnet/9.0"
 }
-Write-Host ("dotnet SDK : " + (dotnet --version))
+# Resolve the SDK from the repo root (not the caller's cwd): global.json discovery walks up
+# from the cwd, so a pin somewhere above the caller could otherwise select a different SDK
+# than the apphost build (also run from the repo root) will actually use.
+Push-Location $repo
+try { $sdkVer = (dotnet --version) } finally { Pop-Location }
+if ([int]($sdkVer -split '\.')[0] -lt 9) {
+    throw ".NET SDK 9.0+ is required to mint the arm64 apphost (found $sdkVer). Install from https://dotnet.microsoft.com/download/dotnet/9.0"
+}
+Write-Host "dotnet SDK : $sdkVer"
 
 # WiX is pinned via the local tool manifest (.config/dotnet-tools.json) so we never
 # disturb any global WiX install and avoid the WiX v7 OSMF EULA gate.
@@ -209,8 +217,13 @@ $apphostProj = Join-Path $repo 'apphost\MCP3.csproj'
 # Build into a fresh per-run folder under the (already cleaned) work dir: a deterministic
 # output path means a stale MCP3.exe from an earlier run can never mask a failed build.
 $apphostOut = Join-Path $work 'apphost'
-dotnet build $apphostProj -c Release -r win-arm64 --nologo -v quiet -o $apphostOut | Out-Host
-if ($LASTEXITCODE -ne 0) { throw "arm64 apphost build failed (exit $LASTEXITCODE)" }
+# Build from the repo root so SDK resolution matches the prerequisite check above,
+# regardless of where the script was invoked from.
+Push-Location $repo
+try {
+    dotnet build $apphostProj -c Release -r win-arm64 --nologo -v quiet -o $apphostOut | Out-Host
+    if ($LASTEXITCODE -ne 0) { throw "arm64 apphost build failed (exit $LASTEXITCODE)" }
+} finally { Pop-Location }
 $armExe = Get-Item (Join-Path $apphostOut 'MCP3.exe') -ErrorAction SilentlyContinue
 if (-not $armExe) { throw "arm64 apphost build did not produce MCP3.exe" }
 if ((Get-PEMachine $armExe.FullName) -ne 'ARM64') { throw "Minted apphost is not ARM64 (got $(Get-PEMachine $armExe.FullName))" }
