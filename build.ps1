@@ -27,6 +27,12 @@
     official MSI's signature is the only integrity link in the chain - only skip this if
     Sparx has changed its code-signing certificate and the check rejects a genuine MSI.
 
+.PARAMETER AllowFallbackDefaults
+    Build even when the product/COM details could not be detected from the source MSI
+    (hardcoded v2.7.1-era defaults are used instead). Without this switch the build stops,
+    because undetected values usually mean Sparx restructured the installer and the output
+    would be mis-versioned or mis-registered.
+
 .EXAMPLE
     .\build.ps1 -SourceMsi "$HOME\Downloads\MCP_EA_x64.msi"
 #>
@@ -39,7 +45,9 @@ param(
 
     [switch]$KeepWork,
 
-    [switch]$SkipSignatureCheck
+    [switch]$SkipSignatureCheck,
+
+    [switch]$AllowFallbackDefaults
 )
 
 $ErrorActionPreference = 'Stop'
@@ -133,23 +141,37 @@ Write-Host "Add-in dir : $($addinDir.FullName)"
 
 # ---------------------------------------------------------------- detect version-specific values
 Write-Step 'Detecting product/COM details from the source MSI'
+# Every value detected below has a hardcoded v2.7.1-era default. Track which defaults get
+# used and refuse to build on a fallback (unless -AllowFallbackDefaults): a detection miss
+# usually means Sparx restructured the installer, and silently stamping stale values would
+# mis-version the MSI or break the COM add-in registration.
+$fallbacks = @()
 $ver = '2.7.1'
 try {
     # Property table: F1=Property, F2=Value
     $row = @(Get-MsiRows $SourceMsi "SELECT `Property`,`Value` FROM Property") | Where-Object { $_.F1 -eq 'ProductVersion' } | Select-Object -First 1
-    if ($row) { $ver = $row.F2 }
-} catch {}
+    if ($row) { $ver = $row.F2 } else { $fallbacks += 'ProductVersion' }
+} catch { Write-Warning "Property table query failed: $($_.Exception.Message)"; $fallbacks += 'ProductVersion' }
 
 # Registry table (SELECT *): F1=Registry, F2=Root, F3=Key, F4=Name, F5=Value, F6=Component
 $reg = @()
-try { $reg = @(Get-MsiRows $SourceMsi "SELECT * FROM Registry") } catch {}
-$progId = ($reg | Where-Object { $_.F3 -match 'EAAddins' } | Select-Object -First 1).F5
+try { $reg = @(Get-MsiRows $SourceMsi "SELECT * FROM Registry") } catch { Write-Warning "Registry table query failed: $($_.Exception.Message)" }
+# ProgId: the DEFAULT value (empty Name) of the actual discovery key, not just any row
+# whose key mentions EAAddins - row order in 'SELECT *' is undefined.
+$progId = ($reg | Where-Object { $_.F3 -match '(?i)Sparx Systems\\EAAddins' -and [string]::IsNullOrEmpty($_.F4) } | Select-Object -First 1).F5
+if (-not $progId) { $progId = 'MCP_EA.Main'; $fallbacks += 'ProgId' }
 $asmRow = $reg | Where-Object { $_.F4 -eq 'Assembly' -and $_.F5 -match ',\s*Version=' } | Select-Object -First 1
-$addinAssembly = if ($asmRow) { $asmRow.F5 } else { 'MCP_EA, Version=1.7.1.0, Culture=neutral, PublicKeyToken=null' }
-$clsidRow = $reg | Where-Object { $_.F3 -match 'CLSID\\\{[0-9A-Fa-f\-]+\}' } | Select-Object -First 1
-$clsid = if ($clsidRow -and $clsidRow.F3 -match '(\{[0-9A-Fa-f\-]+\})') { $Matches[1] } else { '{E21767D7-E7D5-3BBC-8E51-D6393C7BA3EF}' }
-$asmVer = if ($addinAssembly -match 'Version=([\d\.]+)') { $Matches[1] } else { '1.7.1.0' }
-if (-not $progId) { $progId = 'MCP_EA.Main' }
+$addinAssembly = if ($asmRow) { $asmRow.F5 } else { $fallbacks += 'AddinAssembly'; 'MCP_EA, Version=1.7.1.0, Culture=neutral, PublicKeyToken=null' }
+# CLSID: only accept a GUID whose registration carries the detected ProgId as its value,
+# so a second COM class in a future installer can never be picked up by accident.
+$clsidRow = $reg | Where-Object { $_.F3 -match 'CLSID\\(\{[0-9A-Fa-f\-]+\})' -and $_.F5 -eq $progId } | Select-Object -First 1
+$clsid = if ($clsidRow -and $clsidRow.F3 -match '(\{[0-9A-Fa-f\-]+\})') { $Matches[1] } else { $fallbacks += 'Clsid'; '{E21767D7-E7D5-3BBC-8E51-D6393C7BA3EF}' }
+$asmVer = if ($addinAssembly -match 'Version=([\d\.]+)') { $Matches[1] } else { $fallbacks += 'AddinAsmVersion'; '1.7.1.0' }
+
+if ($fallbacks) {
+    Write-Warning ("Could not detect {0} from the source MSI - using hardcoded v2.7.1-era defaults. The output may be mis-versioned or mis-registered (new Sparx installer layout?)." -f ($fallbacks -join ', '))
+    if (-not $AllowFallbackDefaults) { throw 'Refusing to build with fallback defaults (re-run with -AllowFallbackDefaults to override).' }
+}
 
 Write-Host "ProductVersion  : $ver"
 Write-Host "Add-in ProgId   : $progId"
