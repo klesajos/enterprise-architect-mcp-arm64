@@ -124,7 +124,39 @@ jobs:
           $len = (Get-Item $full).Length
           Write-Host "Produced $msi ($len bytes) - Template: $tpl"
           if ($tpl -notmatch 'Arm64') { throw "Expected an Arm64 template, got '$tpl'" }
-          Write-Host "::notice::OK - built a valid Arm64 MSI from the ${{ matrix.source }} source ($len bytes, Template $tpl)"
+
+          # An Arm64 template alone says nothing about the contents - open the database too.
+          function Get-MsiColumn($path, $sql) {
+            $db = $inst.GetType().InvokeMember('OpenDatabase','InvokeMethod',$null,$inst,@($path,0))
+            $v = $db.GetType().InvokeMember('OpenView','InvokeMethod',$null,$db,@($sql))
+            $v.GetType().InvokeMember('Execute','InvokeMethod',$null,$v,$null)
+            $out = @()
+            while ($true) {
+              $r = $v.GetType().InvokeMember('Fetch','InvokeMethod',$null,$v,$null)
+              if (-not $r) { break }
+              $out += [string]$r.GetType().InvokeMember('StringData','GetProperty',$null,$r,@(1))
+            }
+            $out
+          }
+
+          # (1) the one binary this project replaces must be in the output File table
+          #     (FileName uses short|long format - match the long name)
+          $outFiles = Get-MsiColumn $full 'SELECT `FileName` FROM `File`'
+          if (-not ($outFiles | Where-Object { ($_ -split '\|')[-1] -ieq 'MCP3.exe' })) { throw 'MCP3.exe is missing from the output MSI File table' }
+
+          # (2) a diverging file count means Sparx restructured the installer - warn, not fail
+          #     (harvest-vs-source equality is expected today but not strictly guaranteed)
+          $srcFiles = Get-MsiColumn $env:MSI_PATH 'SELECT `FileName` FROM `File`'
+          Write-Host "File table: source $($srcFiles.Count) rows, output $($outFiles.Count) rows"
+          if ($srcFiles.Count -ne $outFiles.Count) { Write-Host "::warning::File-table row count differs (source $($srcFiles.Count) vs output $($outFiles.Count)) - did Sparx restructure the installer?" }
+
+          # (3) version must carry over from the source (catches silent detection fallbacks)
+          $srcVer = (Get-MsiColumn $env:MSI_PATH 'SELECT `Value` FROM `Property` WHERE `Property`=''ProductVersion''') | Select-Object -First 1
+          $outVer = (Get-MsiColumn $full 'SELECT `Value` FROM `Property` WHERE `Property`=''ProductVersion''') | Select-Object -First 1
+          if ($srcVer -ne $outVer) { throw "ProductVersion mismatch: source $srcVer vs output $outVer (detection fallback?)" }
+          Write-Host "ProductVersion: $outVer (matches source)"
+
+          Write-Host "::notice::OK - built a valid Arm64 MSI from the ${{ matrix.source }} source ($len bytes, Template $tpl, $($outFiles.Count) files, v$outVer)"
 
   notify-new-version:
     # The maintenance trigger this project depends on: when the weekly build sees a Sparx
