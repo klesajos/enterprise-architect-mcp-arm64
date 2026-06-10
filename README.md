@@ -345,6 +345,14 @@ docs/                         # architecture diagram (+ .excalidraw source) and 
 - It shares its **UpgradeCode** with the official installer, so installing it **replaces** any existing
   official x86/x64 install of the same product (and vice-versa) — the two cannot coexist. Uninstall
   with `msiexec /x dist\MCP_EA_arm64.msi` or via *Settings ▸ Apps*.
+- **Running EA in Wine / CrossOver (Linux, macOS)?** Don't use this build — Wine presents an
+  x86/x64 Windows environment even on ARM64 hosts (Apple Silicon runs x64 code via Rosetta), so the
+  Arm64 MSI won't install and the arm64 `MCP3.exe` can't run. Use the **official Sparx x64/x86 MSI**
+  inside the same Wine prefix as EA instead. Note that Sparx supports EA itself under Wine/CrossOver
+  but states the MCP Server is Windows-only (*"Linux and macOS are not supported"*) — if you try it
+  anyway, the MCP client must spawn the server **through `wine`** in that same prefix (with the
+  Windows .NET 9 Desktop Runtime installed in it); the named pipe between server and add-in does not
+  cross the prefix boundary, so a host-native server cannot connect.
 - This is an **independent, unofficial** repackage for interoperability on ARM64. It is **not
   affiliated with or endorsed by Sparx Systems.** Please support Sparx and obtain the product from
   them: <https://www.sparxsystems.jp/en/MCP/>
