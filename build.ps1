@@ -160,9 +160,12 @@ Write-Host "Add-in AsmVer   : $asmVer"
 # ---------------------------------------------------------------- mint arm64 apphost
 Write-Step 'Minting native arm64 .NET apphost (MCP3.exe)'
 $apphostProj = Join-Path $repo 'apphost\MCP3.csproj'
-dotnet build $apphostProj -c Release -r win-arm64 --nologo -v quiet | Out-Host
-$armExe = Get-ChildItem (Join-Path $repo 'apphost\bin\Release') -Recurse -Filter 'MCP3.exe' |
-    Where-Object { $_.FullName -match 'win-arm64' } | Select-Object -First 1
+# Build into a fresh per-run folder under the (already cleaned) work dir: a deterministic
+# output path means a stale MCP3.exe from an earlier run can never mask a failed build.
+$apphostOut = Join-Path $work 'apphost'
+dotnet build $apphostProj -c Release -r win-arm64 --nologo -v quiet -o $apphostOut | Out-Host
+if ($LASTEXITCODE -ne 0) { throw "arm64 apphost build failed (exit $LASTEXITCODE)" }
+$armExe = Get-Item (Join-Path $apphostOut 'MCP3.exe') -ErrorAction SilentlyContinue
 if (-not $armExe) { throw "arm64 apphost build did not produce MCP3.exe" }
 if ((Get-PEMachine $armExe.FullName) -ne 'ARM64') { throw "Minted apphost is not ARM64 (got $(Get-PEMachine $armExe.FullName))" }
 Write-Host "arm64 apphost : $($armExe.FullName)"
