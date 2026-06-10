@@ -20,6 +20,14 @@ on:
       - 'apphost/**'
       - '.config/**'
       - '.github/workflows/build.yml'
+  pull_request:                 # validate tooling changes BEFORE they merge
+    branches: [ main ]          # (no secrets used; permissions are contents:read)
+    paths:
+      - 'build.ps1'
+      - 'src/**'
+      - 'apphost/**'
+      - '.config/**'
+      - '.github/workflows/build.yml'
 
 permissions:
   contents: read
@@ -161,8 +169,9 @@ jobs:
   notify-new-version:
     # The maintenance trigger this project depends on: when the weekly build sees a Sparx
     # version newer than the latest v*-arm64 release tag, open (or keep) a rebuild issue.
+    # Not on pull_request: fork PRs get a read-only GITHUB_TOKEN that cannot write issues.
     needs: build
-    if: needs.build.outputs.new_sparx_version != ''
+    if: needs.build.outputs.new_sparx_version != '' && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     permissions:
       issues: write
@@ -209,6 +218,8 @@ jobs:
     # repository activity (workflow runs do not count), which would silently kill this
     # canary on a feature-complete repo. Re-enabling the workflow via the API is a no-op
     # that still resets that timer, so every run pushes the window forward.
+    # Not on pull_request: fork PRs get a read-only GITHUB_TOKEN (actions:write ignored).
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     permissions:
       actions: write
