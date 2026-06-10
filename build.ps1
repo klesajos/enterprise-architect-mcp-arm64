@@ -58,6 +58,7 @@ if (-not $OutDir) { $OutDir = Join-Path $repo 'dist' }
 # the caller's directory and the repo root. Path.Combine keeps rooted paths unchanged
 # (Join-Path 'C:\a' 'C:\b' would yield 'C:\a\C:\b' on Windows PowerShell 5.1).
 $OutDir = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine((Get-Location).ProviderPath, $OutDir))
+$outMsi = Join-Path $OutDir 'MCP_EA_arm64.msi'
 $work  = Join-Path $repo 'build'
 $extract = Join-Path $work 'msi_extract'
 $payload = Join-Path $work 'payload'
@@ -156,6 +157,10 @@ try {
 Write-Step 'Preparing working directory'
 if (Test-Path $work) { Remove-Item $work -Recurse -Force }
 New-Item -ItemType Directory -Force -Path $extract, $payload, $OutDir | Out-Null
+# Drop any MSI from an earlier run NOW: if this build fails partway, a leftover
+# dist\MCP_EA_arm64.msi would otherwise let 'msiexec /i dist\...' (run as a separate
+# step per the README) silently install yesterday's build.
+if (Test-Path $outMsi) { Remove-Item $outMsi -Force }
 
 # ---------------------------------------------------------------- extract MSI
 Write-Step 'Extracting payload from the Sparx MSI (administrative install, no system changes)'
@@ -258,7 +263,6 @@ Write-Host "payload PE check : $peCount binaries OK (portable IL or arm64-native
 # ---------------------------------------------------------------- build MSI
 Write-Step 'Building the ARM64 MSI with WiX'
 $wxs    = Join-Path $repo 'src\MCP_EA_arm64.wxs'
-$outMsi = Join-Path $OutDir 'MCP_EA_arm64.msi'
 $wixArgs = @(
     'tool', 'run', 'wix', 'build', $wxs,
     '-arch', 'arm64',
