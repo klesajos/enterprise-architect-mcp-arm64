@@ -90,3 +90,16 @@ jobs:
           Write-Host "Produced $msi ($len bytes) - Template: $tpl"
           if ($tpl -notmatch 'Arm64') { throw "Expected an Arm64 template, got '$tpl'" }
           Write-Host "::notice::OK - built a valid Arm64 MSI from the ${{ matrix.source }} source ($len bytes, Template $tpl)"
+
+  keepalive:
+    # GitHub auto-disables 'schedule' triggers in public repos after 60 days without
+    # repository activity (workflow runs do not count), which would silently kill this
+    # canary on a feature-complete repo. Re-enabling the workflow via the API is a no-op
+    # that still resets that timer, so every run pushes the window forward.
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X PUT "repos/${{ github.repository }}/actions/workflows/build.yml/enable"
