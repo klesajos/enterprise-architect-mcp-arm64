@@ -138,6 +138,16 @@ cd enterprise-architect-mcp-arm64
 > `powershell -ExecutionPolicy Bypass -File .\build.ps1 -SourceMsi "$HOME\Downloads\MCP_EA_x64.msi"`
 > (or `Set-ExecutionPolicy -Scope Process Bypass` once per session).
 
+Optional parameters (full help: `Get-Help .\build.ps1 -Detailed`):
+
+- `-OutDir <path>` — where to write the MSI (default: `.\dist`).
+- `-KeepWork` — keep the intermediate `.\build` folder for inspection; the natural first step
+  when debugging a failed build.
+- `-SkipSignatureCheck` — bypass the Authenticode check of the source MSI (only if Sparx rotates
+  its code-signing certificate before the tooling catches up).
+- `-AllowFallbackDefaults` — build even when version/ProgID/CLSID detection fails and hardcoded
+  v2.7.1-era defaults are used (normally refused — it usually means Sparx restructured the installer).
+
 Output: `dist\MCP_EA_arm64.msi`. The script auto-detects the product version, add-in ProgID, CLSID
 and assembly identity from *your* MSI, so it should keep working for future Sparx releases — see
 [Updating (new Sparx release)](#updating-new-sparx-release).
