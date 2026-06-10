@@ -59,8 +59,11 @@ pipe** to the `MCP_EA.dll` add-in running *inside* Enterprise Architect, which r
 through in-process **COM**. Because that bridge is a named pipe, the **native ARM64 server works with
 the (emulated x86) EA add-in unchanged**.
 
-> Diagram source (editable): [`docs/architecture.excalidraw`](docs/architecture.excalidraw) — open it
-> at [excalidraw.com](https://excalidraw.com). The PNG above is exported from it.
+> Diagram sources: [`docs/architecture.svg`](docs/architecture.svg) (canonical, hand-tuned) and
+> [`docs/architecture.excalidraw`](docs/architecture.excalidraw) (editable sketch — open it at
+> [excalidraw.com](https://excalidraw.com)). The PNG above is rendered from the SVG by
+> [`tools/render-diagram.ps1`](tools/render-diagram.ps1) — see [`docs/README.md`](docs/README.md)
+> for what is generated from what.
 
 ---
 

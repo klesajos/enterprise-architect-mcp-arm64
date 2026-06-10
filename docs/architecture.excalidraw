@@ -991,11 +991,11 @@
                          "locked":  false,
                          "fontSize":  13,
                          "fontFamily":  2,
-                         "text":  "32-bit . runs under emulation on ARM64",
+                         "text":  "32-/64-bit . runs under emulation on ARM64",
                          "textAlign":  "center",
                          "verticalAlign":  "top",
                          "containerId":  null,
-                         "originalText":  "32-bit . runs under emulation on ARM64",
+                         "originalText":  "32-/64-bit . runs under emulation on ARM64",
                          "lineHeight":  1.25,
                          "baseline":  10
                      },

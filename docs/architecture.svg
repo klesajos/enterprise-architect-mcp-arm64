@@ -38,7 +38,7 @@
   <rect x="1110" y="150" width="440" height="480" rx="18" fill="#fffdf0" stroke="#f08c00" stroke-width="2.5"/>
   <text x="1330" y="190" text-anchor="middle" class="h" font-size="20">Enterprise Architect</text>
   <text x="1330" y="214" text-anchor="middle" class="mut h mono" font-size="14">EA.exe</text>
-  <text x="1330" y="236" text-anchor="middle" class="mut" font-size="13.5">32-bit &#183; runs under emulation on ARM64</text>
+  <text x="1330" y="236" text-anchor="middle" class="mut" font-size="13.5">32-/64-bit &#183; runs under emulation on ARM64</text>
 
   <!-- add-in -->
   <rect x="1145" y="270" width="370" height="170" rx="14" fill="#f3f0ff" stroke="#6741d9" stroke-width="2.5"/>
