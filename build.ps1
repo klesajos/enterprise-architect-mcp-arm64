@@ -74,6 +74,22 @@ function Get-PEMachine([string]$file) {
     } finally { $fs.Close() }
 }
 
+# Managed (.NET) PE detection: a non-zero COM-descriptor data directory (index 14) means a
+# CLR header is present; native images have none. AnyCPU IL reports machine=x86, so the
+# machine field alone cannot distinguish portable IL from a native x86 binary.
+function Test-PEManaged([string]$file) {
+    $fs = [System.IO.File]::OpenRead($file)
+    try {
+        $br = New-Object System.IO.BinaryReader($fs)
+        $fs.Position = 0x3C; $peoff = $br.ReadInt32()
+        $fs.Position = $peoff + 24                            # optional header
+        $magic = $br.ReadUInt16()                             # 0x10B = PE32, 0x20B = PE32+
+        $ddOff = if ($magic -eq 0x20B) { 224 } else { 208 }   # COM descriptor entry offset
+        $fs.Position = $peoff + 24 + $ddOff
+        return ($br.ReadUInt32() -ne 0)
+    } finally { $fs.Close() }
+}
+
 # Minimal read-only MSI table query via the Windows Installer COM API.
 # Returns rows as PSCustomObjects with fields F1, F2, ... (in SELECT column order).
 function Get-MsiRows([string]$msi, [string]$sql) {
@@ -202,9 +218,26 @@ Write-Step 'Assembling arm64 payload (Sparx managed binaries + arm64 apphost)'
 Copy-Item $serverDir.FullName (Join-Path $payload 'MCP_Server') -Recurse
 Copy-Item $addinDir.FullName  (Join-Path $payload 'MCP_Addin')  -Recurse
 Copy-Item $armExe.FullName    (Join-Path $payload 'MCP_Server\MCP3.exe') -Force
-$check = Get-PEMachine (Join-Path $payload 'MCP_Server\MCP3.exe')
-if ($check -ne 'ARM64') { throw "Payload MCP3.exe is $check, expected ARM64" }
-Write-Host "payload MCP3.exe machine : $check"
+
+# Sweep EVERY PE in the payload, not just MCP3.exe: if a future Sparx release ships a
+# native x64/x86 binary, the 'native ARM64' MSI would build green but fail at runtime
+# with BadImageFormat/DllNotFound errors. Portable managed IL is fine; the only native
+# binary allowed is the arm64 apphost minted above.
+$peCount = 0
+Get-ChildItem $payload -Recurse -Include *.dll, *.exe -File | ForEach-Object {
+    $peCount++
+    $m = Get-PEMachine $_.FullName
+    $managed = Test-PEManaged $_.FullName
+    $rel = $_.FullName.Substring($payload.Length + 1)
+    if (-not $managed -and $m -ne 'ARM64') {
+        throw "Native $m binary '$rel' in the payload - this Sparx release has a non-portable dependency the ARM64 package cannot run. The tooling needs updating for this layout."
+    }
+    if ($managed -and $m -notin @('x86', 'ARM64')) {
+        Write-Warning "Managed but platform-specific ($m) assembly '$rel' - it may not load in an arm64 process."
+    }
+}
+if ((Get-PEMachine (Join-Path $payload 'MCP_Server\MCP3.exe')) -ne 'ARM64') { throw 'Payload MCP3.exe is not ARM64' }
+Write-Host "payload PE check : $peCount binaries OK (portable IL or arm64-native)"
 
 # ---------------------------------------------------------------- build MSI
 Write-Step 'Building the ARM64 MSI with WiX'
