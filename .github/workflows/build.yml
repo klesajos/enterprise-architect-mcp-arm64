@@ -36,6 +36,8 @@ jobs:
       matrix:
         source: [x64, x86]      # both official installers share the managed payload
     name: build from ${{ matrix.source }} MSI
+    outputs:
+      new_sparx_version: ${{ steps.vercheck.outputs.new_version }}
     steps:
       - uses: actions/checkout@v6
 
@@ -73,6 +75,39 @@ jobs:
           "### Source ${{ matrix.source }} MSI`n- SHA-256: ``$hash```n- Signer: $($sig.SignerCertificate.Subject)" | Out-File $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
           "MSI_PATH=$dst" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
 
+      # A new Sparx release that builds cleanly is otherwise indistinguishable from last
+      # week's run - surface the version so 'there is something new to build' is a signal,
+      # not something to dig out of a build log.
+      - name: Detect Sparx product version
+        shell: pwsh
+        run: |
+          $inst = New-Object -ComObject WindowsInstaller.Installer
+          $db = $inst.GetType().InvokeMember('OpenDatabase','InvokeMethod',$null,$inst,@($env:MSI_PATH,0))
+          $view = $db.GetType().InvokeMember('OpenView','InvokeMethod',$null,$db,@('SELECT `Value` FROM `Property` WHERE `Property`=''ProductVersion'''))
+          $view.GetType().InvokeMember('Execute','InvokeMethod',$null,$view,$null)
+          $rec = $view.GetType().InvokeMember('Fetch','InvokeMethod',$null,$view,$null)
+          if (-not $rec) { throw 'Could not read ProductVersion from the source MSI' }
+          $ver = [string]$rec.GetType().InvokeMember('StringData','GetProperty',$null,$rec,@(1))
+          Write-Host "Sparx ProductVersion: $ver"
+          "SPARX_VERSION=$ver" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "Sparx ProductVersion (${{ matrix.source }}): **$ver**" | Out-File $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
+
+      - name: Check whether Sparx shipped a new version
+        id: vercheck
+        if: matrix.source == 'x64'   # one leg is enough; output feeds notify-new-version
+        shell: pwsh
+        run: |
+          $tagLines = git ls-remote --tags origin 'v*-arm64'
+          $latest = $tagLines | ForEach-Object { if ($_ -match 'refs/tags/v(\d+(?:\.\d+)+)-arm64$') { [version]$Matches[1] } } | Sort-Object | Select-Object -Last 1
+          if (-not $latest) { Write-Host '::warning::No v*-arm64 release tag found to compare against'; exit 0 }
+          $current = [version]$env:SPARX_VERSION
+          Write-Host "Sparx ships $current; latest arm64 release tag is v$latest-arm64"
+          if ($current -gt $latest) {
+            Write-Host "::warning::Sparx shipped $current but the latest arm64 release is v$latest-arm64 - rebuild, retag, refresh the release notes."
+            "### NEW Sparx version: $current (latest arm64 release: v$latest-arm64)" | Out-File $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
+            "new_version=$current" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          }
+
       - name: Build native ARM64 MSI
         shell: pwsh
         run: ./build.ps1 -SourceMsi "$env:MSI_PATH"
@@ -90,6 +125,28 @@ jobs:
           Write-Host "Produced $msi ($len bytes) - Template: $tpl"
           if ($tpl -notmatch 'Arm64') { throw "Expected an Arm64 template, got '$tpl'" }
           Write-Host "::notice::OK - built a valid Arm64 MSI from the ${{ matrix.source }} source ($len bytes, Template $tpl)"
+
+  notify-new-version:
+    # The maintenance trigger this project depends on: when the weekly build sees a Sparx
+    # version newer than the latest v*-arm64 release tag, open (or keep) a rebuild issue.
+    needs: build
+    if: needs.build.outputs.new_sparx_version != ''
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NEW_VERSION: ${{ needs.build.outputs.new_sparx_version }}
+        run: |
+          title="Sparx shipped v${NEW_VERSION} - rebuild and retag"
+          body="The weekly build detected Sparx MCP v${NEW_VERSION}, newer than the latest v*-arm64 release tag. Rebuild against the new official MSI, test on ARM64 hardware, tag v${NEW_VERSION}-arm64, and refresh the release notes. Run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          existing=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search "\"$title\" in:title" --json number --jq '.[0].number')
+          if [ -n "$existing" ]; then
+            echo "Issue #$existing already tracks this version"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$title" --body "$body"
+          fi
 
   notify-failure:
     # A failed scheduled run otherwise notifies effectively nobody (emails depend on the
