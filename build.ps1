@@ -53,6 +53,11 @@ param(
 $ErrorActionPreference = 'Stop'
 $repo = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Definition }
 if (-not $OutDir) { $OutDir = Join-Path $repo 'dist' }
+# Absolutize a relative -OutDir against the CALLER's cwd now: later steps switch the cwd
+# (Push-Location $repo around WiX), which would otherwise scatter a relative path between
+# the caller's directory and the repo root. Path.Combine keeps rooted paths unchanged
+# (Join-Path 'C:\a' 'C:\b' would yield 'C:\a\C:\b' on Windows PowerShell 5.1).
+$OutDir = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine((Get-Location).ProviderPath, $OutDir))
 $work  = Join-Path $repo 'build'
 $extract = Join-Path $work 'msi_extract'
 $payload = Join-Path $work 'payload'
