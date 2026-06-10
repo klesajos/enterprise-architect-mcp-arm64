@@ -32,9 +32,12 @@
 <?define EaAddinCategory = "{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" ?>
 
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <!-- Manufacturer is honest provenance, NOT "Sparx Systems Japan": Sparx neither produced
+       nor signed this rebuilt MSI, and the Publisher shown in Apps & Features (and the MSI
+       Author summary property, which defaults from this) must not claim they did. -->
   <Package
       Name="MCP Server for Enterprise Architect (Arm64)"
-      Manufacturer="Sparx Systems Japan"
+      Manufacturer="klesajos (unofficial Arm64 repackage; original product by Sparx Systems Japan)"
       Version="$(var.ProductVersion)"
       Language="1033"
       Codepage="1252"
@@ -49,6 +52,10 @@
         DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 
     <MediaTemplate EmbedCab="yes" />
+
+    <!-- Make provenance visible in the installed-programs entry -->
+    <Property Id="ARPCOMMENTS" Value="Unofficial ARM64 repackage; original product by Sparx Systems Japan" />
+    <Property Id="ARPURLINFOABOUT" Value="https://github.com/klesajos/enterprise-architect-mcp-arm64" />
 
     <!-- %ProgramFiles%\Sparx Systems\EA\{MCP_Server,MCP_Addin} -->
     <StandardDirectory Id="ProgramFiles64Folder">
