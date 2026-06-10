@@ -91,6 +91,30 @@ jobs:
           if ($tpl -notmatch 'Arm64') { throw "Expected an Arm64 template, got '$tpl'" }
           Write-Host "::notice::OK - built a valid Arm64 MSI from the ${{ matrix.source }} source ($len bytes, Template $tpl)"
 
+  notify-failure:
+    # A failed scheduled run otherwise notifies effectively nobody (emails depend on the
+    # cron author's personal notification settings) - for a job whose whole purpose is
+    # early warning that Sparx shipped a breaking installer, file an issue instead.
+    # A downstream job (not a step) so the 2-leg matrix files at most ONE issue per run,
+    # and issues:write stays scoped here rather than on the build job.
+    needs: build
+    if: failure() && github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          title="Weekly Sparx MSI build failed"
+          body="Scheduled run failed: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID} - Sparx may have shipped a breaking installer."
+          existing=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search "\"$title\" in:title" --json number --jq '.[0].number')
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --repo "$GITHUB_REPOSITORY" --body "$body"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$title" --body "$body"
+          fi
+
   keepalive:
     # GitHub auto-disables 'schedule' triggers in public repos after 60 days without
     # repository activity (workflow runs do not count), which would silently kill this
