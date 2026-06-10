@@ -176,6 +176,23 @@ if (-not $serverDir -or -not $addinDir) { throw "Could not locate MCP_Server / M
 Write-Host "Server dir : $($serverDir.FullName)"
 Write-Host "Add-in dir : $($addinDir.FullName)"
 
+# Completeness check: only the MCP_Server and MCP_Addin trees are harvested, so payload
+# anywhere else in the admin image would be silently dropped from the rebuilt MSI (and the
+# weekly CI would stay green while producing an incomplete installer). The only expected
+# outsider is the stripped .msi that msiexec /a writes to the TARGETDIR root.
+$known = @($serverDir.FullName, $addinDir.FullName)
+$stray = Get-ChildItem $extract -Recurse -File | Where-Object {
+    $f = $_.FullName
+    $isCachedMsi = ($_.Directory.FullName -eq $extract) -and ($_.Extension -ieq '.msi')
+    $inKnown = $false
+    foreach ($k in $known) { if ($f.StartsWith($k + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase)) { $inKnown = $true; break } }
+    -not $isCachedMsi -and -not $inKnown
+}
+if ($stray) {
+    throw ("Source MSI contains payload outside MCP_Server/MCP_Addin - new Sparx layout? Update src/MCP_EA_arm64.wxs and build.ps1 for it. Unexpected: " +
+        (($stray | Select-Object -First 10 -ExpandProperty FullName) -join '; '))
+}
+
 # ---------------------------------------------------------------- detect version-specific values
 Write-Step 'Detecting product/COM details from the source MSI'
 # Every value detected below has a hardcoded v2.7.1-era default. Track which defaults get
