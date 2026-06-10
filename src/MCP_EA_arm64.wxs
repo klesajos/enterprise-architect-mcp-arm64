@@ -141,11 +141,10 @@
         <RegistryValue Root="HKLM" Key="Software\Classes\CLSID\$(var.Clsid)\InprocServer32\$(var.AddinAsmVersion)"
                        Name="RuntimeVersion" Type="string" Value="v4.0.30319" />
 
-        <!-- ============ managed COM server: 32-bit view (for x86 EA) ============ -->
-        <RegistryValue Root="HKLM" Key="Software\Classes\Wow6432Node\$(var.ProgId)"
-                       Type="string" Value="$(var.ProgId)" />
-        <RegistryValue Root="HKLM" Key="Software\Classes\Wow6432Node\$(var.ProgId)\CLSID"
-                       Type="string" Value="$(var.Clsid)" />
+        <!-- ============ managed COM server: 32-bit view (for x86 EA) ============
+             Note: no ProgId keys here. Under WOW64 only specific Classes subkeys (CLSID,
+             Interface, ...) are bitness-redirected; ProgId keys are SHARED, so 32-bit EA
+             resolves the ProgId from the Software\Classes entries written above. -->
         <RegistryValue Root="HKLM" Key="Software\Classes\Wow6432Node\CLSID\$(var.Clsid)"
                        Type="string" Value="$(var.ProgId)" />
         <RegistryValue Root="HKLM" Key="Software\Classes\Wow6432Node\CLSID\$(var.Clsid)\ProgID"
