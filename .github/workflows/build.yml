@@ -19,6 +19,7 @@ on:
       - 'src/**'
       - 'apphost/**'
       - '.config/**'
+      - 'nuget.config'
       - '.github/workflows/build.yml'
   pull_request:                 # validate tooling changes BEFORE they merge
     branches: [ main ]          # (no secrets used; permissions are contents:read)
@@ -27,6 +28,7 @@ on:
       - 'src/**'
       - 'apphost/**'
       - '.config/**'
+      - 'nuget.config'
       - '.github/workflows/build.yml'
 
 permissions:
