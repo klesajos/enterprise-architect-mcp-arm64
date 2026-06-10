@@ -226,9 +226,19 @@ $apphostProj = Join-Path $repo 'apphost\MCP3.csproj'
 $apphostOut = Join-Path $work 'apphost'
 # Build from the repo root so SDK resolution matches the prerequisite check above,
 # regardless of where the script was invoked from.
+# Stamp identifiable Win32 version resources: without these the one binary this project
+# replaces shows FileVersion 1.0.0.0 / ProductName 'MCP3' in Explorer, Task Manager and
+# crash dumps. Version=$ver also matters for Windows Installer overwrite logic, which
+# compares FileVersion ('unofficial' stays in the strings so the repackage is never
+# mistaken for the Sparx original).
 Push-Location $repo
 try {
-    dotnet build $apphostProj -c Release -r win-arm64 --nologo -v quiet -o $apphostOut | Out-Host
+    dotnet build $apphostProj -c Release -r win-arm64 --nologo -v quiet -o $apphostOut `
+        "-p:Version=$ver" `
+        "-p:InformationalVersion=$ver+arm64-repack" `
+        "-p:Product=MCP Server for Enterprise Architect (unofficial Arm64 repackage)" `
+        "-p:AssemblyTitle=MCP Server for Enterprise Architect (Arm64 apphost)" `
+        "-p:Company=klesajos/enterprise-architect-mcp-arm64" | Out-Host
     if ($LASTEXITCODE -ne 0) { throw "arm64 apphost build failed (exit $LASTEXITCODE)" }
 } finally { Pop-Location }
 $armExe = Get-Item (Join-Path $apphostOut 'MCP3.exe') -ErrorAction SilentlyContinue
