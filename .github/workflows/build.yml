@@ -50,11 +50,17 @@ jobs:
           $url = 'https://www.sparxsystems.jp/en/MCP/bin/MCP_EA_${{ matrix.source }}.msi'
           $dst = Join-Path $env:RUNNER_TEMP 'MCP_EA_source.msi'
           Write-Host "Downloading $url"
-          Invoke-WebRequest -Uri $url -OutFile $dst -UseBasicParsing -MaximumRedirection 5 `
+          Invoke-WebRequest -Uri $url -OutFile $dst -MaximumRedirection 5 `
             -Headers @{ 'User-Agent' = 'enterprise-architect-mcp-arm64-ci' }
           $len = (Get-Item $dst).Length
           Write-Host "Downloaded $len bytes"
           if ($len -lt 500000) { throw "Download looks too small ($len bytes) - URL changed or blocked?" }
+          # A large soft-200 page (CDN block page) passes the size check but is not an MSI;
+          # catch it here instead of as a confusing msiexec error inside build.ps1.
+          $fs = [System.IO.File]::OpenRead($dst)
+          try { $magic = New-Object byte[] 8; $null = $fs.Read($magic, 0, 8) } finally { $fs.Dispose() }
+          $magicHex = -join ($magic | ForEach-Object ToString X2)
+          if ($magicHex -ne 'D0CF11E0A1B11AE1') { throw "Downloaded file is not an MSI (bad OLE signature: $magicHex) - URL changed or blocked?" }
           # Gate BEFORE the file is handed to the build (msiexec /a executes admin-sequence
           # custom actions): the weekly run consumes this URL unattended, so a compromised
           # download must fail here. build.ps1 re-checks the signature as defense-in-depth.
