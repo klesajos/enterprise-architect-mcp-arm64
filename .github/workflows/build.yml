@@ -102,9 +102,12 @@ jobs:
           "SPARX_VERSION=$ver" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
           "Sparx ProductVersion (${{ matrix.source }}): **$ver**" | Out-File $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
 
+      # Runs in BOTH matrix legs on purpose: a matrix job's outputs are written by every
+      # leg (last-completed wins), so a leg that skipped this step would clobber the other
+      # leg's detected version with an empty string. Both installers carry the same
+      # ProductVersion, so the legs agree; the notify job dedupes by issue title anyway.
       - name: Check whether Sparx shipped a new version
         id: vercheck
-        if: matrix.source == 'x64'   # one leg is enough; output feeds notify-new-version
         shell: pwsh
         run: |
           $tagLines = git ls-remote --tags origin 'v*-arm64'
