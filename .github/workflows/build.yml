@@ -55,6 +55,16 @@ jobs:
           $len = (Get-Item $dst).Length
           Write-Host "Downloaded $len bytes"
           if ($len -lt 500000) { throw "Download looks too small ($len bytes) - URL changed or blocked?" }
+          # Gate BEFORE the file is handed to the build (msiexec /a executes admin-sequence
+          # custom actions): the weekly run consumes this URL unattended, so a compromised
+          # download must fail here. build.ps1 re-checks the signature as defense-in-depth.
+          $sig = Get-AuthenticodeSignature $dst
+          if ($sig.Status -ne 'Valid') { throw "Authenticode check failed: status $($sig.Status), expected Valid" }
+          if ($sig.SignerCertificate.Subject -notmatch 'Sparx Systems') { throw "Unexpected signer: $($sig.SignerCertificate.Subject)" }
+          # Record what was consumed, so an unexpected rotation is auditable after the fact
+          $hash = (Get-FileHash $dst -Algorithm SHA256).Hash
+          Write-Host "::notice::Source ${{ matrix.source }} MSI SHA-256 $hash, signed by $($sig.SignerCertificate.Subject)"
+          "### Source ${{ matrix.source }} MSI`n- SHA-256: ``$hash```n- Signer: $($sig.SignerCertificate.Subject)" | Out-File $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
           "MSI_PATH=$dst" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
 
       - name: Build native ARM64 MSI
