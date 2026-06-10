@@ -96,6 +96,7 @@ MSI**, fixed **add-in registration**, and dropping the native runtime-check. Tha
 | Managed payload (`MCP3.dll`, `MCP_EA.dll`, deps) | AnyCPU | **reused byte-for-byte** |
 | EA add-in registration | `EAAddins64` (64-bit view) | **`EAAddins` + `EAAddins64` in both 32- and 64-bit views** |
 | .NET runtime check | native x64 custom action | removed (the apphost prompts if the runtime is missing) |
+| Install directory | follows EA's install path (registry search) + chooser dialog | **follows EA's install path (registry search)**, no dialog — silent default-path install |
 
 The add-in is registered for **both 32-bit and 64-bit Enterprise Architect**. EA reads its add-in
 keys from the registry view matching its *own* architecture, so registering in both views means the

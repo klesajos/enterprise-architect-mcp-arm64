@@ -17,6 +17,10 @@
       own bitness. (Sparx EA reads add-in keys from the view matching its own architecture.)
     * The official native .NET runtime-check custom action is dropped; the apphost shows
       its own "framework not found" prompt + download URL if the runtime is missing.
+    * The official install-directory chooser dialog (WixUI) is dropped - this MSI installs
+      silently. Like the official MSI, INSTALLDIR follows 64-bit EA's real install folder
+      via AppSearch (HKCU\Software\Sparx Systems\EA64\EA "Install Path", written by EA
+      when it runs); otherwise it falls back to C:\Program Files\Sparx Systems\EA.
 
   Values that change between Sparx releases are passed in as preprocessor defines by
   build.ps1 (auto-detected from your source MSI); the defaults below match v2.7.1.
@@ -56,6 +60,15 @@
     <!-- Make provenance visible in the installed-programs entry -->
     <Property Id="ARPCOMMENTS" Value="Unofficial ARM64 repackage; original product by Sparx Systems Japan" />
     <Property Id="ARPURLINFOABOUT" Value="https://github.com/klesajos/enterprise-architect-mcp-arm64" />
+
+    <!-- Default INSTALLDIR to EA's real install folder, exactly like the official MSI's
+         AppSearch: HKCU "Install Path" under EA64, written by 64-bit EA when it runs.
+         Deliberately EA64-only (the official search ignores EA400/32-bit EA too, and the
+         add-in works from any folder via its registry CodeBase); when the key is absent
+         the StandardDirectory default below applies. -->
+    <Property Id="INSTALLDIR" Secure="yes">
+      <RegistrySearch Id="seaEA64" Root="HKCU" Key="Software\Sparx Systems\EA64\EA" Name="Install Path" Type="directory" Bitness="always64" />
+    </Property>
 
     <!-- %ProgramFiles%\Sparx Systems\EA\{MCP_Server,MCP_Addin} -->
     <StandardDirectory Id="ProgramFiles64Folder">
