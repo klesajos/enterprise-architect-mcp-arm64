@@ -120,6 +120,19 @@ jobs:
         shell: pwsh
         run: ./build.ps1 -SourceMsi "$env:MSI_PATH"
 
+      # The msiexec /l*v log is the one diagnostic written only to a file (build.ps1
+      # throws before its cleanup on failure, so it is still on disk). Never widen the
+      # path to build/** - the work dir contains extracted Sparx proprietary binaries,
+      # which must not appear in downloadable public-repo artifacts.
+      - name: Upload msiexec extract log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: admin-extract-log-${{ matrix.source }}   # unique per matrix leg (v4 errors on duplicates)
+          path: build/admin_extract.log
+          if-no-files-found: ignore                      # failure() also fires before build/ exists
+          retention-days: 7
+
       - name: Verify the output is a valid Arm64 MSI
         shell: pwsh
         run: |
