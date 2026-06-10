@@ -139,7 +139,10 @@ Write-Host ("dotnet SDK : " + (dotnet --version))
 # disturb any global WiX install and avoid the WiX v7 OSMF EULA gate.
 Write-Step 'Restoring WiX (local dotnet tool, pinned in .config/dotnet-tools.json)'
 Push-Location $repo
-try { dotnet tool restore | Out-Host } finally { Pop-Location }
+try {
+    dotnet tool restore | Out-Host
+    if ($LASTEXITCODE -ne 0) { throw "dotnet tool restore failed (exit $LASTEXITCODE) - WiX 5.0.2 could not be restored. Check network/NuGet feed access (the first run must download the wix package)." }
+} finally { Pop-Location }
 
 # ---------------------------------------------------------------- clean work dir
 Write-Step 'Preparing working directory'
