@@ -149,7 +149,7 @@ Optional parameters (full help: `Get-Help .\build.ps1 -Detailed`):
 - `-SkipSignatureCheck` — bypass the Authenticode check of the source MSI (only if Sparx rotates
   its code-signing certificate before the tooling catches up).
 - `-AllowFallbackDefaults` — build even when version/ProgID/CLSID detection fails and hardcoded
-  v2.7.1-era defaults are used (normally refused — it usually means Sparx restructured the installer).
+  v2.7.3-era defaults are used (normally refused — it usually means Sparx restructured the installer).
 
 Output: `dist\MCP_EA_arm64.msi`. The script auto-detects the product version, add-in ProgID, CLSID
 and assembly identity from *your* MSI, so it should keep working for future Sparx releases — see

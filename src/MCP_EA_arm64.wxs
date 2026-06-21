@@ -23,9 +23,9 @@
       when it runs); otherwise it falls back to C:\Program Files\Sparx Systems\EA.
 
   Values that change between Sparx releases are passed in as preprocessor defines by
-  build.ps1 (auto-detected from your source MSI); the defaults below match v2.7.1.
+  build.ps1 (auto-detected from your source MSI); the defaults below match v2.7.3.
 -->
-<?ifndef ProductVersion ?><?define ProductVersion = "2.7.1" ?><?endif?>
+<?ifndef ProductVersion ?><?define ProductVersion = "2.7.3" ?><?endif?>
 <?ifndef ProgId         ?><?define ProgId         = "MCP_EA.Main" ?><?endif?>
 <?ifndef Clsid          ?><?define Clsid          = "{E21767D7-E7D5-3BBC-8E51-D6393C7BA3EF}" ?><?endif?>
 <?ifndef AddinAssembly  ?><?define AddinAssembly  = "MCP_EA, Version=1.7.1.0, Culture=neutral, PublicKeyToken=null" ?><?endif?>

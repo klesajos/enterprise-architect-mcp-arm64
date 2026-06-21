@@ -29,7 +29,7 @@
 
 .PARAMETER AllowFallbackDefaults
     Build even when the product/COM details could not be detected from the source MSI
-    (hardcoded v2.7.1-era defaults are used instead). Without this switch the build stops,
+    (hardcoded v2.7.3-era defaults are used instead). Without this switch the build stops,
     because undetected values usually mean Sparx restructured the installer and the output
     would be mis-versioned or mis-registered.
 
@@ -195,12 +195,12 @@ if ($stray) {
 
 # ---------------------------------------------------------------- detect version-specific values
 Write-Step 'Detecting product/COM details from the source MSI'
-# Every value detected below has a hardcoded v2.7.1-era default. Track which defaults get
+# Every value detected below has a hardcoded v2.7.3-era default. Track which defaults get
 # used and refuse to build on a fallback (unless -AllowFallbackDefaults): a detection miss
 # usually means Sparx restructured the installer, and silently stamping stale values would
 # mis-version the MSI or break the COM add-in registration.
 $fallbacks = @()
-$ver = '2.7.1'
+$ver = '2.7.3'
 try {
     # Property table: F1=Property, F2=Value. Single-quoted on purpose: in a double-quoted
     # string PowerShell eats the backquotes (its escape character) before Windows Installer
@@ -225,7 +225,7 @@ $clsid = if ($clsidRow -and $clsidRow.F3 -match '(\{[0-9A-Fa-f\-]+\})') { $Match
 $asmVer = if ($addinAssembly -match 'Version=([\d\.]+)') { $Matches[1] } else { $fallbacks += 'AddinAsmVersion'; '1.7.1.0' }
 
 if ($fallbacks) {
-    Write-Warning ("Could not detect {0} from the source MSI - using hardcoded v2.7.1-era defaults. The output may be mis-versioned or mis-registered (new Sparx installer layout?)." -f ($fallbacks -join ', '))
+    Write-Warning ("Could not detect {0} from the source MSI - using hardcoded v2.7.3-era defaults. The output may be mis-versioned or mis-registered (new Sparx installer layout?)." -f ($fallbacks -join ', '))
     if (-not $AllowFallbackDefaults) { throw 'Refusing to build with fallback defaults (re-run with -AllowFallbackDefaults to override).' }
 }
 
